@@ -1,0 +1,29 @@
+﻿{
+	"name": "Polygon Scaner",
+	"version": "2.0.0",
+	"description": "GlobalLogic polygon scaner by Rostyslav Lesovyi",
+	"icons" : {
+		"16": "img/logo_16.png",
+		"32": "img/logo_32.png",
+		"48": "img/logo_48.png",
+		"64": "img/logo_64.png",
+		"128": "img/logo_128.png",
+		"256": "img/logo_256.png"
+	},
+
+	"background_page": "background.html",
+
+	"options_page": "options.html",
+	
+	"browser_action": {
+		"default_icon": "img/logo_16.png",
+		"default_title": "Scan polygon"
+	},
+
+	"permissions": [
+		"tabs",
+		"http://portal-ua.globallogic.com/polygon-lviv/",
+		"http://*/*",
+		"https://*/*"
+	]
+}

@@ -1,0 +1,58 @@
+<script src="js/jquery/jquery-1.7.2.min.js"></script>
+<script src="js/core/gl.js"></script>
+<script src="js/core/db.js"></script>
+<script src="js/core/api.js"></script>
+<script src="js/core/user.js"></script>
+<script src="js/utils/base64.js"></script>
+<script src="js/utils/sprintf.js"></script>
+
+<script>
+
+//////////////////////////////////////////////////////////////////////
+chrome.browserAction.onClicked.addListener(function(tab) {
+
+	var css = [
+		'css/jquery-ui-1.8.20.custom.css',
+		'css/user-selector.css',
+		'css/popup.css'
+	];
+
+	var scripts = [
+		'js/jquery/jquery-1.7.2.min.js',
+		'js/jquery/jquery-ui-1.8.20.custom.min.js',
+		'js/core/gl.js',
+		'js/core/db.js',
+		'js/core/api.js',
+		'js/core/user.js',
+		'js/utils/base64.js',
+		'js/utils/sprintf.js',
+		'js/controls/user-selector.js',
+		'js/popup.js'
+	];
+
+	for (var index = 0; index < css.length; ++index) {
+		chrome.tabs.insertCSS(tab.id, { file: css[index] });
+	}
+
+	for (var index = 0; index < scripts.length; ++index) {
+		chrome.tabs.executeScript(tab.id, { file: scripts[index] });
+	}
+
+});
+
+//////////////////////////////////////////////////////////////////////
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+
+	request.args.push(function() {
+		var array = [];
+		for (var index = 0; index < arguments.length; ++index) {
+			array.push(arguments[index]);
+		}
+		sendResponse({ args: array });
+	});
+
+	gl[request.component].core[request.func].apply(window, request.args);
+
+});
+
+</script>

@@ -1,0 +1,47 @@
+.gl-user-selector
+{
+	background-repeat: no-repeat;
+	background-size: auto 75%;
+	background-position: left center;
+	padding-left: 28px;
+}
+
+.gl-user-selector.gl-loading
+{
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/loading.gif');
+}
+
+.gl-user-selector.gl-search
+{
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/search.png');
+}
+
+.gl-user-selector.gl-reload
+{
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/reload.png');
+}
+
+.gl-user-selector.gl-edit
+{
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/edit.png');
+}
+
+.gl-user-selector input
+{
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid #ABADB3;
+	font: 14px Verdana;
+	color: black;
+}
+
+.gl-user-selector input:disabled
+{
+	border: 1px solid transparent;
+	background-color: transparent;
+}
+
+.gl-user-selector.gl-reload input:disabled, .gl-user-selector.gl-edit input:disabled
+{
+	cursor: pointer;
+}

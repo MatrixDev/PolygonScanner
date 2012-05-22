@@ -1,0 +1,54 @@
+body
+{
+	background-color: #ffe;
+	font: 1em Verdana;
+}
+
+.options
+{
+	position: absolute;
+	width: 600px;
+	left: 50%;
+	top: 50px;
+	margin-left: -300px;
+}
+
+.options > .title
+{
+	text-align: center;
+	font-size: 1.2em;
+	font-weight: bold;
+	font-style: italic;
+	margin-bottom: 20px;
+}
+
+.options > .body
+{
+	background-color: #fff;
+	border-radius: 10px;
+	border: solid 3px #666;
+	padding: 30px;
+}
+
+.options > .body > table
+{
+	width: 100%;
+}
+
+.options > .body > table td:first-child
+{
+	text-align: right;
+	width: 40%;
+}
+
+.options > .body > table td:last-child
+{
+	text-align: left;
+}
+
+.options .warning
+{
+	color: red;
+	font-size: 0.8em;
+	font-weight: bold;
+}

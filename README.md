@@ -1,4 +1,0 @@
-PolygonScanner
-==============
-
-GlobalLogic polygon scanner

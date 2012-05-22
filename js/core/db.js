@@ -1,0 +1,99 @@
+(function($) {
+
+	window.gl = window.gl || {};
+
+	//////////////////////////////////////////////////////////////////////
+	// Interface
+	//////////////////////////////////////////////////////////////////////	
+	window.gl.db = {
+
+		//////////////////////////////////////////////////////////////////////
+		getUserId: function(callback) {
+			gl.invoke('db', 'getUserId', [], callback);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setUserId: function(id) {
+			gl.invoke('db', 'setUserId', [id]);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		getCredentials: function(callback) {
+			gl.invoke('db', 'getCredentials', [], callback);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setCredentials: function(login, password) {
+			gl.invoke('db', 'setCredentials', [login, password]);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		getDaysCount: function(callback) {
+			gl.invoke('db', 'getDaysCount', [], callback);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setDaysCount: function(count) {
+			gl.invoke('db', 'setDaysCount', [count]);
+		}
+
+	};
+	
+	//////////////////////////////////////////////////////////////////////	
+	// Core
+	//////////////////////////////////////////////////////////////////////
+	window.gl.db.core = {
+
+		//////////////////////////////////////////////////////////////////////
+		getUserId: function(callback) {
+			id = parseInt(localStorage.userId);
+
+			callback(isNaN(id) ? -1 : id);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setUserId: function(id) {
+			id = parseInt(id);
+			if (!isNaN(id)) {
+				localStorage.userId = id;
+			}
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		getCredentials: function(callback) {
+			login = localStorage.login;
+			password = localStorage.password;
+			
+			if (login != null && login.length > 0 && password != null && password.length > 0) {
+				callback(login, password);
+			} else {
+				callback('', '');
+			}
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setCredentials: function(login, password) {
+			if (login != null && password != null) {
+				localStorage.login = login;
+				localStorage.password = password;
+			}
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		getDaysCount: function(callback) {
+			count = parseInt(localStorage.daysCount);
+
+			callback(isNaN(count) ? 7 : count);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setDaysCount: function(count) {
+			count = parseInt(count);
+			if (!isNaN(count) && count > 0) {
+				localStorage.daysCount = count;
+			}
+		}
+
+	};
+
+})(jQuery)

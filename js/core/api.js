@@ -1,0 +1,151 @@
+(function($) {
+
+	var polygonUrl = 'http://portal-ua.globallogic.com/polygon-lviv/';
+
+	window.gl = window.gl || {};
+
+	//////////////////////////////////////////////////////////////////////
+	// Interface
+	//////////////////////////////////////////////////////////////////////
+	window.gl.api = {
+
+		//////////////////////////////////////////////////////////////////////
+		users: function(success, error) {
+			gl.invoke('api', 'users', [], function(result, data) {
+				if (result) {
+					if (success) success(data);
+				} else {
+					if (error) error(data);
+				}
+			});
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		userInfo: function(id, dateFrom, dateTo, success, error) {
+			gl.invoke('api', 'userInfo', [id, dateFrom, dateTo], function(result, data) {
+				if (result) {
+					if (success) success(data);
+				} else {
+					if (error) error(data);
+				}
+			});
+		}
+
+	};
+
+	//////////////////////////////////////////////////////////////////////
+	// Core
+	//////////////////////////////////////////////////////////////////////
+	window.gl.api.core = {
+
+		//////////////////////////////////////////////////////////////////////
+		users: function(callback) {
+			get(null, function(success, data) {
+				if (!success) {
+					if (callback != null) callback(false, data);
+					return;
+				}
+
+				var children = $(data).find('select[name="sid"]').children();
+				
+				var users = [];
+				for (var index = 0; index < children.length; ++index) {
+					var elem = $(children[index]);
+					
+					users.push(gl.user(elem.val(), elem.text()));
+				}
+				
+				if (callback != null) callback(true, users);
+			});
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		userInfo: function(id, dateSrc, dateDst, callback) {
+			dateSrc = new Date(dateSrc);
+			dateDst = new Date(dateDst);
+
+			var postString = sprintf('sid=%d&from_y=%d&from_m=%d&from_d=%d&to_y=%d&to_m=%d&to_d=%d&action=showtime',
+				id,
+				dateSrc.getFullYear(),
+				dateSrc.getMonth() + 1,
+				dateSrc.getDate(),
+				dateDst.getFullYear(),
+				dateDst.getMonth() + 1,
+				dateDst.getDate());
+			
+			post(postString, function(success, data) {
+				if (!success) {
+					if (callback) callback(false, data);
+					return;
+				}
+
+				var info = [];
+
+				$(data).find('tr').parent().children().each(function(index, element) {
+					var contents = $(element).contents().filter('th');
+					if (index > 0 && contents.size() > 0) {
+						var time = parseTime($(contents[3]).text());
+						time.date = $(contents[5]).text().substr('Total time on '.length);
+						info.push(time);
+					}
+				});
+				
+				callback(true, info);
+			});
+		}
+
+	};
+
+	//////////////////////////////////////////////////////////////////////
+	// Helpers
+	//////////////////////////////////////////////////////////////////////
+	function get(data, callback) {
+		send('GET', data, callback);
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	function post(data, callback) {
+		send('POST', data, callback);
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	function send(method, data, callback) {
+		$.ajax({
+			url: polygonUrl,
+			method: method,
+			data: data,
+			beforeSend: function(xhr) {
+				/*var credentials = db.credentials();
+				if (credentials != null) { // supported only NTLM Authorization
+					xhr.setRequestHeader('Authorization', 'Basic ' + Base64.encode(credentials.login + ':' + credentials.password));
+				}*/
+			},
+			success: function(data) {
+				callback(true, data);
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				callback(false, xhr.statusText + ' (' + textStatus + ')');
+			}
+		});
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	function parseTime(time) {
+		var parts = time.split(':');
+
+		var total_min = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+		if (total_min < 0) {
+			total_min = 0;
+		}
+		
+		var hours = parseInt(total_min / 60, 10);
+		var minutes = parseInt(total_min % 60, 10);
+		var oracle = parseInt(minutes * 100 / 60, 10);
+		
+		return {
+			time: sprintf('%02d:%02d', hours, minutes),
+			oracle: sprintf('%02d.%02d', hours, oracle),
+		};
+	}
+
+})(jQuery);

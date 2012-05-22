@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="css/options.css" type="text/css" media="all">
+<link rel="stylesheet" href="css/user-selector.css" type="text/css" media="all">
+<link rel="stylesheet" href="css/jquery-ui-1.8.20.custom.css" type="text/css" media="all">
+
+<script src="js/jquery/jquery-1.7.2.min.js"></script>
+<script src="js/jquery/jquery-ui-1.8.20.custom.min.js"></script>
+<script src="js/core/gl.js"></script>
+<script src="js/core/db.js"></script>
+<script src="js/core/api.js"></script>
+<script src="js/core/user.js"></script>
+<script src="js/controls/user-selector.js"></script>
+<script src="js/options.js"></script>
+
+<div class="options">
+
+	<div class="title">
+		GlobalLogic polygon scanner
+	</div>
+
+	<div class="body">
+
+		<table cellpadding="10">
+			<tr>
+				<td>Default User</td>
+				<td>
+					<div id="user_id"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>Login</td>
+				<td>
+					<input id="login" type="text" value=""/>
+				</td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td>
+					<input id="password" type="password" value=""/><br/>
+					<span class="warning">Warning: not secured</span>
+				</td>
+			</tr>
+			<tr>
+				<td>Days, N</td>
+				<td><input id="days_count" type="text" value=""/></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center">
+					<input type="button" id="apply" value="Apply" />
+				</td>
+			</tr>
+		</table>
+
+	</div>
+
+</div>
