@@ -12,7 +12,7 @@
 			</div>\
 			<div id="gl_content"></div>\
 		</div>\
-	').appendTo('body').draggable();
+	').appendTo('body').draggable({ cancel: 'table, .gl-header' });
 
 	var offset = 0;
 	var content = popup.find('#gl_content');
