@@ -2,11 +2,12 @@
 
 	$('.gl-popup').remove();
 
-	if ($('.gl-popup').size() > 0) return;
-
 	var popup = $('\
 		<div class="gl-popup">\
-			<div id="gl_user_id"></div>\
+			<div class="gl-header">\
+				<div id="gl_close"></div>\
+				<div id="gl_user_id"></div>\
+			</div>\
 			<div id="gl_content"></div>\
 		</div>\
 	').appendTo('body').draggable();
@@ -30,7 +31,7 @@
 	function handleSuccess(info) {
 		var html = '<table>';
 		html += '<tr>';
-		html += '<th style="width: 200px;">Дата</th>';
+		html += '<th style="width: 120px;">Дата</th>';
 		html += '<th style="width: 75px;">Час</th>';
 		html += '<th style="width: 75px;">Оракл</th>';
 		html += '</tr>';
@@ -50,5 +51,10 @@
 	function handleError(error) {
 		content.html(error);
 	}
+
+	//////////////////////////////////////////////////////////////////////
+	popup.find('#gl_close').click(function() {
+		popup.remove();
+	});
 
 })(jQuery);
