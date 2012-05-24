@@ -1,0 +1,76 @@
+(function($) {
+
+	var currentVersion = '';
+	var isLatestVestion = true;
+
+	window.gl = window.gl || {};
+
+	//////////////////////////////////////////////////////////////////////
+	// Interface
+	//////////////////////////////////////////////////////////////////////
+	window.gl.version = {
+
+		//////////////////////////////////////////////////////////////////////
+		get: function(callback) {
+			gl.invoke('version', 'get', [], callback);
+		}
+	};
+
+	//////////////////////////////////////////////////////////////////////
+	// Core
+	//////////////////////////////////////////////////////////////////////
+	window.gl.version.core = {
+
+		//////////////////////////////////////////////////////////////////////
+		check: function() {
+			getCurrentVersion();
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		get: function(callback) {
+			callback(currentVersion, isLatestVestion);
+		}
+	};
+
+	//////////////////////////////////////////////////////////////////////
+	// Helpers
+	//////////////////////////////////////////////////////////////////////
+	function getCurrentVersion() {
+		$.ajax({
+			type: 'GET',
+			url: 'manifest.json',
+			dataType: 'json',
+			success: function(data, textStatus, jqXHR) {
+				currentVersion = data.version;
+
+				checkVersion();
+			}
+		});
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	function checkVersion() {
+		var timerId = setTimeout(checkVersion, 60 * 60 * 1000); // check each hour
+
+		$.ajax({
+			type: 'GET',
+			url: 'https://raw.github.com/MatrixDev/PolygonScanner/master/manifest.json',
+			dataType: 'json',
+			success: function(data, textStatus, jqXHR) {
+				if (currentVersion != data.version) {
+					clearTimeout(timerId);
+
+					showBadge();
+				}
+			}
+		});
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	function showBadge() {
+		chrome.browserAction.setBadgeText({ text: 'New!' });
+
+		isLatestVestion = false;
+	}
+
+})(jQuery);

@@ -3,10 +3,13 @@
 <script src="js/core/db.js"></script>
 <script src="js/core/api.js"></script>
 <script src="js/core/user.js"></script>
+<script src="js/core/version.js"></script>
 <script src="js/utils/base64.js"></script>
 <script src="js/utils/sprintf.js"></script>
 
 <script>
+
+window.gl.version.core.check();
 
 //////////////////////////////////////////////////////////////////////
 chrome.browserAction.onClicked.addListener(function(tab) {

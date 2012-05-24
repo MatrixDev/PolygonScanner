@@ -84,9 +84,10 @@
 				$(data).find('tr').parent().children().each(function(index, element) {
 					var contents = $(element).contents().filter('th');
 					if (index > 0 && contents.size() > 0) {
-						var time = parseTime($(contents[3]).text());
-						time.date = $(contents[5]).text().substr('Total time on '.length);
-						info.push(time);
+						var object = {};
+						parseDate(object, $(contents[5]).text());
+						parseTime(object, $(contents[3]).text());
+						info.push(object);
 					}
 				});
 				
@@ -130,7 +131,13 @@
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	function parseTime(time) {
+	function parseDate(result, date) {
+		result.date = Date.parse(date.substr('Total time on '.length));
+		result.isToday = (new Date().toDateString() == new Date(result.date).toDateString());
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	function parseTime(result, time) {
 		var parts = time.split(':');
 
 		var total_min = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
@@ -141,11 +148,10 @@
 		var hours = parseInt(total_min / 60, 10);
 		var minutes = parseInt(total_min % 60, 10);
 		var oracle = parseInt(minutes * 100 / 60, 10);
-		
-		return {
-			time: sprintf('%02d:%02d', hours, minutes),
-			oracle: sprintf('%02d.%02d', hours, oracle),
-		};
+
+		result.totalMin = total_min;
+		result.time = sprintf('%02d:%02d', hours, minutes);
+		result.oracle = sprintf('%02d.%02d', hours, oracle);
 	}
 
 })(jQuery);

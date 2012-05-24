@@ -27,16 +27,6 @@
 			gl.invoke('db', 'setCredentials', [login, password]);
 		},
 
-		//////////////////////////////////////////////////////////////////////
-		getDaysCount: function(callback) {
-			gl.invoke('db', 'getDaysCount', [], callback);
-		},
-
-		//////////////////////////////////////////////////////////////////////
-		setDaysCount: function(count) {
-			gl.invoke('db', 'setDaysCount', [count]);
-		}
-
 	};
 	
 	//////////////////////////////////////////////////////////////////////	
@@ -76,21 +66,6 @@
 			if (login != null && password != null) {
 				localStorage.login = login;
 				localStorage.password = password;
-			}
-		},
-
-		//////////////////////////////////////////////////////////////////////
-		getDaysCount: function(callback) {
-			count = parseInt(localStorage.daysCount);
-
-			callback(isNaN(count) ? 7 : count);
-		},
-
-		//////////////////////////////////////////////////////////////////////
-		setDaysCount: function(count) {
-			count = parseInt(count);
-			if (!isNaN(count) && count > 0) {
-				localStorage.daysCount = count;
 			}
 		}
 

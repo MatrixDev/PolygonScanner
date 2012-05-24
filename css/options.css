@@ -52,3 +52,14 @@ body
 	font-size: 0.8em;
 	font-weight: bold;
 }
+
+.options .version
+{
+	margin-top: 20px;
+	text-align: center;
+}
+
+.options #new_version
+{
+	display: none;
+}

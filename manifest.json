@@ -1,6 +1,6 @@
 ﻿{
 	"name": "Polygon Scaner",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "GlobalLogic polygon scaner by Rostyslav Lesovyi",
 	"icons" : {
 		"16": "img/logo_16.png",

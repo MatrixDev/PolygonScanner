@@ -8,6 +8,7 @@
 <script src="js/core/db.js"></script>
 <script src="js/core/api.js"></script>
 <script src="js/core/user.js"></script>
+<script src="js/core/version.js"></script>
 <script src="js/controls/user-selector.js"></script>
 <script src="js/options.js"></script>
 
@@ -26,7 +27,7 @@
 					<div id="user_id"></div>
 				</td>
 			</tr>
-			<tr>
+			<!--<tr>
 				<td>Login</td>
 				<td>
 					<input id="login" type="text" value=""/>
@@ -38,17 +39,15 @@
 					<input id="password" type="password" value=""/><br/>
 					<span class="warning">Warning: not secured</span>
 				</td>
-			</tr>
-			<tr>
-				<td>Days, N</td>
-				<td><input id="days_count" type="text" value=""/></td>
-			</tr>
-			<tr>
-				<td colspan="2" style="text-align: center">
-					<input type="button" id="apply" value="Apply" />
-				</td>
-			</tr>
+			</tr>-->
 		</table>
+
+		<div class="version">
+			Current version is <span id="version"></span>.
+			<span id="new_version">
+				You can download new version <a href="https://github.com/downloads/MatrixDev/PolygonScanner/PolygonScanner.crx">here</a>.
+			</span>
+		</div>
 
 	</div>
 

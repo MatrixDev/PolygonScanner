@@ -1,7 +1,9 @@
 .gl-popup
 {
 	position: fixed;
-	width: 300px;
+	display: inline-block;
+	max-width: 90%;
+	max-height: 90%;
 	top: 20px;
 	left: 20px;
 	border-radius: 10px;
@@ -15,22 +17,46 @@
 {
 	height: 32px;
 	padding-left: 20px;
-	padding-right: 26px;
+	padding-right: 80px;
 	margin-left: -10px;
 	margin-right: -10px;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	background-color: rgba(222, 222, 222, 0.95);
 }
 
+.gl-popup #gl_left
+{
+	float: right;
+	width: 24px;
+	height: 24px;
+	margin-top: 3px;
+	margin-right: -24px;
+	cursor: pointer;
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/left.png');
+	background-size: 100% 100%;
+}
+
+.gl-popup #gl_right
+{
+	float: right;
+	width: 24px;
+	height: 24px;
+	margin-top: 3px;
+	margin-right: -48px;
+	cursor: pointer;
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/right.png');
+	background-size: 100% 100%;
+}
+
 .gl-popup #gl_close
 {
 	float: right;
-	width: 20px;
-	height: 20px;
-	margin-top: 5px;
-	margin-right: -20px;
+	width: 24px;
+	height: 24px;
+	margin-top: 3px;
+	margin-right: -74px;
 	cursor: pointer;
 	background-image: url('chrome-extension://__MSG_@@extension_id__/img/close.png');
 	background-size: 100% 100%;
@@ -49,12 +75,36 @@
 	cursor: default;
 }
 
+.gl-popup table th, .gl-popup table td
+{
+	padding: 3px 10px;
+}
+
 .gl-popup table th
 {
 	font: bold 12px Verdana;
+	text-align: center;
 }
 
 .gl-popup table td
 {
 	font: 12px Verdana;
+	text-align: center;
+}
+
+.gl-popup .gl-positive
+{
+	color: green;
+	font-weight: bold;
+}
+
+.gl-popup .gl-negative
+{
+	color: red;
+	font-weight: bold;
+}
+
+.gl-popup .gl-today
+{
+	background-color: rgba(128, 128, 128, 0.2);
 }
