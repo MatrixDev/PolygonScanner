@@ -14,59 +14,65 @@
 
 .gl-popup .gl-header
 {
-	height: 32px;
-	padding-left: 20px;
-	padding-right: 80px;
+	height: 28px;
+	padding-top: 4px;
+	padding-left: 5px;
+	padding-right: 5px;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
-	background-color: rgba(0, 0, 0, 0.05);;
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.gl-popup .gl-header > *
+{
+	width: 24px;
+	height: 24px;
+	margin-left: 10px;
+}
+
+.gl-popup #gl_user_id
+{
+	float: left;
+	width: 200px;
+	height: auto;
 }
 
 .gl-popup #gl_left
 {
-	float: right;
-	width: 24px;
-	height: 24px;
-	margin-top: 3px;
-	margin-right: -24px;
-	cursor: pointer;
+	float: left;
 	background-image: url('chrome-extension://__MSG_@@extension_id__/img/left.png');
 	background-size: 100% 100%;
 }
 
 .gl-popup #gl_right
 {
-	float: right;
-	width: 24px;
-	height: 24px;
-	margin-top: 3px;
-	margin-right: -48px;
-	cursor: pointer;
+	float: left;
 	background-image: url('chrome-extension://__MSG_@@extension_id__/img/right.png');
+	background-size: 100% 100%;
+}
+
+.gl-popup #gl_refresh
+{
+	float: left;
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/refresh.png');
 	background-size: 100% 100%;
 }
 
 .gl-popup #gl_close
 {
 	float: right;
-	width: 24px;
-	height: 24px;
-	margin-top: 3px;
-	margin-right: -74px;
-	cursor: pointer;
 	background-image: url('chrome-extension://__MSG_@@extension_id__/img/close.png');
 	background-size: 100% 100%;
 }
 
-.gl-popup #gl_user_id
+.gl-popup .gl-content
 {
-	line-height: 32px;
-	margin-right: 20px;
+	margin: 10px 20px 20px 20px;
 }
 
-.gl-popup #gl_content
+.gl-popup #gl_table_content
 {
-	padding: 20px 10px;
+	margin-top: 10px;
 }
 
 .gl-popup table

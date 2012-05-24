@@ -5,17 +5,21 @@
 	var popup = $('\
 		<div class="gl-popup">\
 			<div class="gl-header">\
-				<div id="gl_left"></div>\
-				<div id="gl_right"></div>\
-				<div id="gl_close"></div>\
 				<div id="gl_user_id"></div>\
+				<div class="gl-clickable" id="gl_left"></div>\
+				<div class="gl-clickable" id="gl_right"></div>\
+				<div class="gl-clickable" id="gl_refresh"></div>\
+				<div class="gl-clickable" id="gl_close"></div>\
 			</div>\
-			<div id="gl_content"></div>\
+			<div class="gl-content">\
+				<div id="gl_table_content">\
+				</div>\
+			</div>\
 		</div>\
-	').appendTo('body').draggable({ cancel: 'table, .gl-header' });
+	').appendTo('body').draggable({ cancel: '.gl-header, .gl-content', cursor: 'move', stop: handleDragStop });
 
 	var offset = 0;
-	var content = popup.find('#gl_content');
+	var content = popup.find('#gl_table_content');
 	var selector = popup.find('#gl_user_id').userSelector({ callback: update }).data('userSelector');
 
 	//////////////////////////////////////////////////////////////////////
@@ -118,6 +122,16 @@
 	}
 
 	//////////////////////////////////////////////////////////////////////
+	function handleDragStop(event, ui) {
+		var eTop = ui.helper.offset().top;
+	    var wTop = $(window).scrollTop();
+	    var top = eTop - wTop;
+
+        ui.helper.css('position', 'fixed');
+        ui.helper.css('top', top + "px");
+	}
+
+	//////////////////////////////////////////////////////////////////////
 	popup.find('#gl_close').click(function() {
 		popup.remove();
 	});
@@ -131,6 +145,11 @@
 	//////////////////////////////////////////////////////////////////////
 	popup.find('#gl_right').click(function() {
 		offset++;
+		update();
+	});
+
+	//////////////////////////////////////////////////////////////////////
+	popup.find('#gl_refresh').click(function() {
 		update();
 	});
 

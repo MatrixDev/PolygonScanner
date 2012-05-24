@@ -1,9 +1,9 @@
 .gl-user-selector
 {
 	background-repeat: no-repeat;
-	background-size: auto 75%;
+	background-size: 16px 16px;
 	background-position: left center;
-	padding-left: 28px;
+	padding-left: 20px;
 }
 
 .gl-user-selector.gl-loading
