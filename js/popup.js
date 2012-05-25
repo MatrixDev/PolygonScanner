@@ -12,14 +12,14 @@
 				<div class="gl-clickable" id="gl_close"></div>\
 			</div>\
 			<div class="gl-content">\
-				<span>\
+				<div id="gl_timesheet_range">\
 					Timesheet from <input id="gl_src" type="text" /> to <input id="gl_dst" type="text" /> <div class="gl-clickable" id="gl_go"></div>\
-				</span>\
+				</div>\
 				<div id="gl_table_content">\
 				</div>\
 			</div>\
 		</div>\
-	').appendTo('body').draggable({ cancel: '.gl-header, .gl-content', cursor: 'move', stop: handleDragStop });
+	').appendTo('body').draggable({ cancel: '.gl-header, .gl-content', cursor: 'move', stop: handleDragStop }).css('position', 'fixed');
 
 	var offset = 0;
 	var content = popup.find('#gl_table_content');
