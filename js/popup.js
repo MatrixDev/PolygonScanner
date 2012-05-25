@@ -7,11 +7,14 @@
 			<div class="gl-header">\
 				<div id="gl_user_id"></div>\
 				<div class="gl-clickable" id="gl_left"></div>\
-				<div class="gl-clickable" id="gl_right"></div>\
 				<div class="gl-clickable" id="gl_refresh"></div>\
+				<div class="gl-clickable" id="gl_right"></div>\
 				<div class="gl-clickable" id="gl_close"></div>\
 			</div>\
 			<div class="gl-content">\
+				<span>\
+					Timesheet from <input id="gl_src" type="text" /> to <input id="gl_dst" type="text" /> <div class="gl-clickable" id="gl_go"></div>\
+				</span>\
 				<div id="gl_table_content">\
 				</div>\
 			</div>\
@@ -20,13 +23,12 @@
 
 	var offset = 0;
 	var content = popup.find('#gl_table_content');
-	var selector = popup.find('#gl_user_id').userSelector({ callback: update }).data('userSelector');
+	var selector = popup.find('#gl_user_id').userSelector({ callback: updateRange }).data('userSelector');
+	var daySrc = popup.find('#gl_src').datepicker();
+	var dayDst = popup.find('#gl_dst').datepicker();
 
 	//////////////////////////////////////////////////////////////////////
-	function update() {
-		content.empty();
-
-		var user = selector.user();
+	function updateRange() {
 		var msInDay = 24 * 60 * 60 * 1000;
 		var day1, day2;
 
@@ -39,19 +41,21 @@
 			day2 = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 		}
 
-		var date1 = new Date(today.getFullYear(), today.getMonth(), day1).getTime();
-		var date2 = new Date(today.getFullYear(), today.getMonth(), day2).getTime();
+		daySrc.datepicker('setDate', new Date(today.getFullYear(), today.getMonth(), day1));
+		dayDst.datepicker('setDate', new Date(today.getFullYear(), today.getMonth(), day2));
+
+		updateTimesheet();
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	function updateTimesheet() {
+		content.empty();
+
+		var user = selector.user();
+		var date1 = daySrc.datepicker('getDate');
+		var date2 = dayDst.datepicker('getDate');
 
 		gl.api.userInfo(user.id, date1, date2, handleSuccess, handleError);
-
-		/*gl.db.getDaysCount(function(count) {
-			var msInDay = 24 * 60 * 60 * 1000;
-
-			var date2 = new Date().getTime();
-			var date1 = date2 - count * msInDay;
-
-			gl.api.userInfo(user.id, date1, date2, handleSuccess, handleError);
-		});*/
 	}
 
 	//////////////////////////////////////////////////////////////////////
@@ -139,18 +143,24 @@
 	//////////////////////////////////////////////////////////////////////
 	popup.find('#gl_left').click(function() {
 		offset--;
-		update();
+		updateRange();
 	});
 
 	//////////////////////////////////////////////////////////////////////
 	popup.find('#gl_right').click(function() {
 		offset++;
-		update();
+		updateRange();
 	});
 
 	//////////////////////////////////////////////////////////////////////
 	popup.find('#gl_refresh').click(function() {
-		update();
+		offset = 0;
+		updateRange();
+	});
+
+	//////////////////////////////////////////////////////////////////////
+	popup.find('#gl_go').click(function() {
+		updateTimesheet();
 	});
 
 })(jQuery);
