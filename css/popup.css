@@ -76,6 +76,11 @@
 	font-size: 10px;
 }
 
+.gl-popup #gl_timesheet_range input
+{
+	text-align: center;
+}
+
 .gl-popup #gl_go
 {
 	display: inline-block;
