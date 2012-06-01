@@ -29,6 +29,17 @@
 					if (error) error(data);
 				}
 			});
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		userIsAtWork: function(id, success, error) {
+			gl.invoke('api', 'userIsAtWork', [id], function(result, data) {
+				if (result) {
+					if (success) success(data);
+				} else {
+					if (error) error(data);
+				}
+			});
 		}
 
 	};
@@ -93,6 +104,29 @@
 				
 				callback(true, info);
 			});
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		userIsAtWork: function(id, callback) {
+			var today = new Date();
+
+			var postString = sprintf('sid=%d&from_y=%d&from_m=%d&from_d=%d&to_y=%d&to_m=%d&to_d=%d&action=showtime',
+				id,
+				today.getFullYear(),
+				today.getMonth() + 1,
+				today.getDate(),
+				today.getFullYear(),
+				today.getMonth() + 1,
+				today.getDate());
+			
+			post(postString, function(success, data) {
+				if (!success) {
+					if (callback) callback(false, data);
+					return;
+				}
+
+				callback(true, data.indexOf('not exited, possibly still in office') >= 0);
+			});
 		}
 
 	};
@@ -115,6 +149,7 @@
 			url: polygonUrl,
 			method: method,
 			data: data,
+			dataType: 'html',
 			beforeSend: function(xhr) {
 				/*var credentials = db.credentials();
 				if (credentials != null) { // supported only NTLM Authorization

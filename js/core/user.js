@@ -7,7 +7,7 @@
 	//////////////////////////////////////////////////////////////////////
 	window.gl.user = function(id, name) {
 		return { id: id, name: name };
-	}
+	};
 
 	//////////////////////////////////////////////////////////////////////
 	window.gl.user.all = function(success, error) {
@@ -24,6 +24,13 @@
 			}
 			error('user not found');
 		}, error);
+	};
+
+	//////////////////////////////////////////////////////////////////////
+	window.gl.user.isAtWork = function(id, success, error) {
+		var today = new Date().getTime();
+
+		window.gl.api.userIsAtWork(id, success, error);
 	};
 
 })(jQuery);

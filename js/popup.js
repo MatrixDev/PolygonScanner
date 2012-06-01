@@ -10,6 +10,7 @@
 				<div class="gl-clickable" id="gl_refresh"></div>\
 				<div class="gl-clickable" id="gl_right"></div>\
 				<div class="gl-clickable" id="gl_close"></div>\
+				<div id="gl_at_work"></div>\
 			</div>\
 			<div class="gl-content">\
 				<div id="gl_timesheet_range">\
@@ -23,9 +24,21 @@
 
 	var offset = 0;
 	var content = popup.find('#gl_table_content');
-	var selector = popup.find('#gl_user_id').userSelector({ callback: updateRange }).data('userSelector');
+	var selector = popup.find('#gl_user_id').userSelector({ callback: updateUser }).data('userSelector');
+	var atWork = popup.find('#gl_at_work').hide();
 	var daySrc = popup.find('#gl_src').datepicker();
 	var dayDst = popup.find('#gl_dst').datepicker();
+
+	//////////////////////////////////////////////////////////////////////
+	function updateUser() {
+		window.gl.user.isAtWork(selector.user().id, function(is) {
+			atWork[is ? 'fadeIn' : 'fadeOut']();
+		}, function() {
+			atWork.fadeOut();
+		});
+
+		updateRange();
+	}
 
 	//////////////////////////////////////////////////////////////////////
 	function updateRange() {

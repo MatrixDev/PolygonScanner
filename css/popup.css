@@ -58,6 +58,13 @@
 	background-size: 100% 100%;
 }
 
+.gl-popup #gl_at_work
+{
+	float: left;
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/at_work.png');
+	background-size: 100% 100%;
+}
+
 .gl-popup #gl_close
 {
 	float: right;

@@ -22,55 +22,19 @@
 	window.gl.version.core = {
 
 		//////////////////////////////////////////////////////////////////////
-		check: function() {
-			getCurrentVersion();
-		},
-
-		//////////////////////////////////////////////////////////////////////
 		get: function(callback) {
-			callback(currentVersion, isLatestVestion);
+			$.ajax({
+				type: 'GET',
+				url: 'manifest.json',
+				dataType: 'json',
+				success: function(data, textStatus, jqXHR) {
+					callback(data.version);
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					callback('unknown');
+				}
+			});
 		}
 	};
-
-	//////////////////////////////////////////////////////////////////////
-	// Helpers
-	//////////////////////////////////////////////////////////////////////
-	function getCurrentVersion() {
-		$.ajax({
-			type: 'GET',
-			url: 'manifest.json',
-			dataType: 'json',
-			success: function(data, textStatus, jqXHR) {
-				currentVersion = data.version;
-
-				checkVersion();
-			}
-		});
-	}
-
-	//////////////////////////////////////////////////////////////////////
-	function checkVersion() {
-		var timerId = setTimeout(checkVersion, 60 * 60 * 1000); // check each hour
-
-		$.ajax({
-			type: 'GET',
-			url: 'https://raw.github.com/MatrixDev/PolygonScanner/master/manifest.json',
-			dataType: 'json',
-			success: function(data, textStatus, jqXHR) {
-				if (currentVersion != data.version) {
-					clearTimeout(timerId);
-
-					showBadge();
-				}
-			}
-		});
-	}
-
-	//////////////////////////////////////////////////////////////////////
-	function showBadge() {
-		chrome.browserAction.setBadgeText({ text: 'New!' });
-
-		isLatestVestion = false;
-	}
 
 })(jQuery);

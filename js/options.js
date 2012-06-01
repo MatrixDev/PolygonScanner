@@ -24,11 +24,8 @@ $(document).ready(function() {
 	});
 
 	//////////////////////////////////////////////////////////////////////
-	gl.version.get(function(version, isLatest) {
+	gl.version.get(function(version) {
 		$('#version').text(version);
-		if (!isLatest) {
-			$('#new_version').css('display', 'inline');
-		}
 	});
 
 });
