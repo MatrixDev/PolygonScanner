@@ -1,6 +1,6 @@
 ﻿{
 	"name": "Polygon Scanner",
-	"version": "2.0.4",
+	"version": "2.0.3.1",
 	"description": "GlobalLogic polygon scanner by Rostyslav Lesovyi",
 	"icons" : {
 		"16": "img/logo_16.png",
@@ -25,5 +25,7 @@
 		"http://portal-ua.globallogic.com/polygon-lviv/",
 		"http://*/*",
 		"https://*/*"
-	]
+	],
+
+	"update_url": "https://github.com/MatrixDev/PolygonScanner/blob/master/updates.xml"
 }
