@@ -1,7 +1,8 @@
 ﻿{
 	"name": "Polygon Scanner",
-	"version": "2.0.3.2",
+	"version": "2.0.3",
 	"description": "GlobalLogic polygon scanner by Rostyslav Lesovyi",
+
 	"icons" : {
 		"16": "img/logo_16.png",
 		"32": "img/logo_32.png",
@@ -27,5 +28,5 @@
 		"https://*/*"
 	],
 
-	"update_url": "https://github.com/MatrixDev/PolygonScanner/blob/master/updates.xml"
+	"update_url": "https://raw.github.com/MatrixDev/PolygonScanner/master/updates.xml"
 }
