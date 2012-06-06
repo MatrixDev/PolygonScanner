@@ -112,6 +112,11 @@
 	cursor: default;
 }
 
+.gl-popup table, .gl-popup tr, .gl-popup th, .gl-popup td
+{
+	color: #000;
+}
+
 .gl-popup table th, .gl-popup table td
 {
 	padding: 3px 10px;

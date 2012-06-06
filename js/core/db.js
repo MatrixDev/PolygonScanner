@@ -27,6 +27,16 @@
 			gl.invoke('db', 'setCredentials', [login, password]);
 		},
 
+		//////////////////////////////////////////////////////////////////////
+		getLocation: function(callback) {
+			gl.invoke('db', 'getLocation', [], callback);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setLocation: function(location) {
+			gl.invoke('db', 'setLocation', [location]);
+		}
+
 	};
 	
 	//////////////////////////////////////////////////////////////////////	
@@ -36,7 +46,7 @@
 
 		//////////////////////////////////////////////////////////////////////
 		getUserId: function(callback) {
-			id = parseInt(localStorage.userId);
+			var id = parseInt(localStorage.userId);
 
 			callback(isNaN(id) ? -1 : id);
 		},
@@ -51,10 +61,10 @@
 
 		//////////////////////////////////////////////////////////////////////
 		getCredentials: function(callback) {
-			login = localStorage.login;
-			password = localStorage.password;
+			var login = localStorage.login;
+			var password = localStorage.password;
 			
-			if (login != null && login.length > 0 && password != null && password.length > 0) {
+			if (isNonEmptyString(login) && isNonEmptyString(password)) {
 				callback(login, password);
 			} else {
 				callback('', '');
@@ -67,8 +77,33 @@
 				localStorage.login = login;
 				localStorage.password = password;
 			}
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		getLocation: function(callback) {
+			var location = localStorage.location;
+
+			if (isNonEmptyString(location)) {
+				callback(location);
+			} else {
+				callback(window.gl.location.locations[0].name);
+			}
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setLocation: function(location) {
+			if (isNonEmptyString(location)) {
+				localStorage.location = location;
+			}
 		}
 
 	};
+
+	//////////////////////////////////////////////////////////////////////
+	// Helpers
+	//////////////////////////////////////////////////////////////////////
+	function isNonEmptyString(value) {
+		return (typeof value == 'string') && value.length > 0;
+	}
 
 })(jQuery)

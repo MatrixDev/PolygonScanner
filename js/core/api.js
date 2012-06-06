@@ -1,7 +1,5 @@
 (function($) {
 
-	var polygonUrl = 'http://portal-ua.globallogic.com/polygon-lviv/';
-
 	window.gl = window.gl || {};
 
 	//////////////////////////////////////////////////////////////////////
@@ -146,7 +144,7 @@
 	//////////////////////////////////////////////////////////////////////
 	function send(method, data, callback) {
 		$.ajax({
-			url: polygonUrl,
+			url: window.gl.location.core.current().url,
 			method: method,
 			data: data,
 			dataType: 'html',
