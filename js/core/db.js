@@ -86,7 +86,7 @@
 			if (isNonEmptyString(location)) {
 				callback(location);
 			} else {
-				callback(window.gl.location.locations[0].name);
+				callback(window.gl.location.all[0].name);
 			}
 		},
 
