@@ -26,8 +26,8 @@
 	var content = popup.find('#gl_table_content');
 	var selector = popup.find('#gl_user_id').userSelector({ callback: updateUser }).data('userSelector');
 	var atWork = popup.find('#gl_at_work').hide();
-	var daySrc = popup.find('#gl_src').datepicker();
-	var dayDst = popup.find('#gl_dst').datepicker();
+	var daySrc = popup.find('#gl_src').dateinput().data('dateinput');
+	var dayDst = popup.find('#gl_dst').dateinput().data('dateinput');
 
 	//////////////////////////////////////////////////////////////////////
 	function updateUser() {
@@ -54,8 +54,8 @@
 			day2 = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 		}
 
-		daySrc.datepicker('setDate', new Date(today.getFullYear(), today.getMonth(), day1));
-		dayDst.datepicker('setDate', new Date(today.getFullYear(), today.getMonth(), day2));
+		daySrc.setValue(new Date(today.getFullYear(), today.getMonth(), day1));
+		dayDst.setValue(new Date(today.getFullYear(), today.getMonth(), day2));
 
 		updateTimesheet();
 	}
@@ -65,8 +65,8 @@
 		content.empty();
 
 		var user = selector.user();
-		var date1 = daySrc.datepicker('getDate');
-		var date2 = dayDst.datepicker('getDate');
+		var date1 = daySrc.getValue();
+		var date2 = dayDst.getValue();
 
 		gl.api.userInfo(user.id, date1, date2, handleSuccess, handleError);
 	}

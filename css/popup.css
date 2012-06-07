@@ -8,7 +8,7 @@
 	left: 20px;
 	border-radius: 10px;
 	background-color: rgba(255, 255, 255, 0.95);
-	z-index: 99999999999;
+	z-index: 5000;
 	box-shadow: 0px 0px 10px 0px #888;
 }
 
@@ -86,6 +86,13 @@
 .gl-popup #gl_timesheet_range input
 {
 	text-align: center;
+}
+
+.gl-popup #gl_src, .gl-popup #gl_dst
+{
+	width: 70px;
+	margin: 0px 10px;
+	font-size: 10px;
 }
 
 .gl-popup #gl_go
