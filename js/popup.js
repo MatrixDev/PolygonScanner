@@ -9,12 +9,14 @@
 				<div class="gl-clickable" id="gl_left" title="Previous period"></div>\
 				<div class="gl-clickable" id="gl_refresh" title="Reset to today"></div>\
 				<div class="gl-clickable" id="gl_right" title="Next period"></div>\
-				<div class="gl-clickable" id="gl_close" title="Close"></div>\
+				<div class="gl-clickable" id="gl_close"></div>\
 				<div id="gl_at_work" title="At Work"></div>\
 			</div>\
 			<div class="gl-content">\
 				<div id="gl_timesheet_range">\
-					Timesheet from <input id="gl_src" type="text" /> to <input id="gl_dst" type="text" /> <div class="gl-clickable" id="gl_go" title="Show timesheet"></div>\
+					Timesheet from <input id="gl_src" type="text" /> to <input id="gl_dst" type="text" />\
+					<div class="gl-clickable" id="gl_go" title="Show timesheet"></div>\
+					<div class="gl-clickable" id="gl_fill" title="Auto-fill oracle timesheet"></div>\
 				</div>\
 				<div id="gl_table_content">\
 				</div>\
@@ -26,10 +28,15 @@
 	var content = popup.find('#gl_table_content');
 	var selector = popup.find('#gl_user_id').userSelector({ callback: updateUser }).data('userSelector');
 	var atWork = popup.find('#gl_at_work').hide();
+	var autoFill = popup.find('#gl_fill');
 	var daySrc = popup.find('#gl_src').dateinput().data('dateinput');
 	var dayDst = popup.find('#gl_dst').dateinput().data('dateinput');
 
 	popup.find('[title]').tooltip({ tipClass: 'gl-tooltip', position: 'bottom center', effect: 'fade', offset: [10, 0], predelay: 500 });
+
+	if ($('#N57').size() == 0) {
+		autoFill.hide();
+	}
 
 	//////////////////////////////////////////////////////////////////////
 	function updateUser() {
@@ -176,6 +183,38 @@
 	//////////////////////////////////////////////////////////////////////
 	popup.find('#gl_go').click(function() {
 		updateTimesheet();
+	});
+
+	//////////////////////////////////////////////////////////////////////
+	autoFill.click(function() {
+		var timeSelect = $('#N57');
+		if (timeSelect.size() == 0) {
+			return;
+		}
+
+		var timeRange = timeSelect.val();
+		var src = new Date(
+			parseInt(timeRange.substr(0, 4)),
+			parseInt(timeRange.substr(5, 2)) - 1,
+			parseInt(timeRange.substr(8, 2))
+		);
+		var dst = new Date(
+			parseInt(timeRange.substr(11, 4)),
+			parseInt(timeRange.substr(16, 2)) - 1,
+			parseInt(timeRange.substr(19, 2))
+		);
+
+		gl.api.userInfo(selector.user().id, src, dst, function(info) {
+			for (var index = 0; index < info.length; ++index) {
+				if (!info[index].date) continue;
+
+				var offset = (info[index].date - src.getTime()) / (24 * 60 * 60 * 1000);
+
+				$('#B22_1_' + offset).val(info[index].oracle);
+			}
+		}, function(error) {
+			alert('failed to fetch data from polygon: ' + error);
+		});
 	});
 
 })(jQuery);
