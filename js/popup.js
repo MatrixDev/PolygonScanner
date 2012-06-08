@@ -9,12 +9,12 @@
 				<div class="gl-clickable" id="gl_left" title="Previous period"></div>\
 				<div class="gl-clickable" id="gl_refresh" title="Reset to today"></div>\
 				<div class="gl-clickable" id="gl_right" title="Next period"></div>\
-				<div class="gl-clickable" id="gl_close"></div>\
+				<div class="gl-clickable" id="gl_close" title="Close"></div>\
 				<div id="gl_at_work" title="At Work"></div>\
 			</div>\
 			<div class="gl-content">\
 				<div id="gl_timesheet_range">\
-					Timesheet from <input id="gl_src" type="text" /> to <input id="gl_dst" type="text" /> <div class="gl-clickable" id="gl_go"></div>\
+					Timesheet from <input id="gl_src" type="text" /> to <input id="gl_dst" type="text" /> <div class="gl-clickable" id="gl_go" title="Show timesheet"></div>\
 				</div>\
 				<div id="gl_table_content">\
 				</div>\
@@ -29,7 +29,7 @@
 	var daySrc = popup.find('#gl_src').dateinput().data('dateinput');
 	var dayDst = popup.find('#gl_dst').dateinput().data('dateinput');
 
-	popup.find('[title]').tooltip({ tipClass: 'gl-tooltip', position: 'bottom center', offset: [10, 0] });
+	popup.find('[title]').tooltip({ tipClass: 'gl-tooltip', position: 'bottom center', effect: 'fade', offset: [10, 0], predelay: 500 });
 
 	//////////////////////////////////////////////////////////////////////
 	function updateUser() {

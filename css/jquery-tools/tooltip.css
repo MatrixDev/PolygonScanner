@@ -1,10 +1,12 @@
 .gl-tooltip
 {
-	background-color: #ffa;
+	padding: 5px 10px;
+	border-radius: 10px;
     border: 1px solid #cc9;
-    padding: 3px;
-    box-shadow: 2px 2px 11px #666;
-	font-size: 12px;
-	font-weight: bold;
+	background-color: #ffa;
+	box-shadow: #888 0px 0px 5px -1px;
+	font-family: Verdana;
+	font-size: 11px;
 	z-index: 10000;
+	cursor: default;
 }
