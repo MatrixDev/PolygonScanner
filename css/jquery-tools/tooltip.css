@@ -1,0 +1,10 @@
+.gl-tooltip
+{
+	background-color: #ffa;
+    border: 1px solid #cc9;
+    padding: 3px;
+    box-shadow: 2px 2px 11px #666;
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 10000;
+}

@@ -6,11 +6,11 @@
 		<div class="gl-popup">\
 			<div class="gl-header">\
 				<div id="gl_user_id"></div>\
-				<div class="gl-clickable" id="gl_left"></div>\
-				<div class="gl-clickable" id="gl_refresh"></div>\
-				<div class="gl-clickable" id="gl_right"></div>\
+				<div class="gl-clickable" id="gl_left" title="Previous period"></div>\
+				<div class="gl-clickable" id="gl_refresh" title="Reset to today"></div>\
+				<div class="gl-clickable" id="gl_right" title="Next period"></div>\
 				<div class="gl-clickable" id="gl_close"></div>\
-				<div id="gl_at_work"></div>\
+				<div id="gl_at_work" title="At Work"></div>\
 			</div>\
 			<div class="gl-content">\
 				<div id="gl_timesheet_range">\
@@ -28,6 +28,8 @@
 	var atWork = popup.find('#gl_at_work').hide();
 	var daySrc = popup.find('#gl_src').dateinput().data('dateinput');
 	var dayDst = popup.find('#gl_dst').dateinput().data('dateinput');
+
+	popup.find('[title]').tooltip({ tipClass: 'gl-tooltip', position: 'bottom center', offset: [10, 0] });
 
 	//////////////////////////////////////////////////////////////////////
 	function updateUser() {

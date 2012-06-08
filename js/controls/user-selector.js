@@ -85,7 +85,7 @@
 
 			actionHandler = handler;
 
-			var finalClass = 'gl-user-selector';
+			var finalClass = 'gl-user-selector gl-clickable';
 			if (cls != null && cls.length > 0) {
 				finalClass += ' ' + cls;
 			}
