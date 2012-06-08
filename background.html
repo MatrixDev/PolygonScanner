@@ -60,4 +60,13 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 
 });
 
+//////////////////////////////////////////////////////////////////////
+(function() {
+	if (gl.db.core.getInstallTime()) return;
+
+	gl.db.core.setInstallTime(new Date().getTime());
+
+    chrome.tabs.create({ url: "options.html" });
+})();
+
 </script>

@@ -95,6 +95,16 @@
 			if (isNonEmptyString(location)) {
 				localStorage.location = location;
 			}
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		getInstallTime: function() {
+			return localStorage.installTime;
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setInstallTime: function(time) {
+			localStorage.installTime = time;
 		}
 
 	};
