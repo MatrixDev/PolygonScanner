@@ -194,14 +194,14 @@
 
 		var timeRange = timeSelect.val();
 		var src = new Date(
-			parseInt(timeRange.substr(0, 4)),
-			parseInt(timeRange.substr(5, 2)) - 1,
-			parseInt(timeRange.substr(8, 2))
+			parseInt(timeRange.substr(0, 4), 10),
+			parseInt(timeRange.substr(5, 2), 10) - 1,
+			parseInt(timeRange.substr(8, 2), 10)
 		);
 		var dst = new Date(
-			parseInt(timeRange.substr(11, 4)),
-			parseInt(timeRange.substr(16, 2)) - 1,
-			parseInt(timeRange.substr(19, 2))
+			parseInt(timeRange.substr(11, 4), 10),
+			parseInt(timeRange.substr(16, 2), 10) - 1,
+			parseInt(timeRange.substr(19, 2), 10)
 		);
 
 		gl.api.userInfo(selector.user().id, src, dst, function(info) {
