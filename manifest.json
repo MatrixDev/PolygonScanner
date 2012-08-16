@@ -32,7 +32,6 @@
 	"options_page": "options.html",
 
 	"web_accessible_resources": [
-		/* jQuery UI */
 		"css/images/ui-bg_flat_0_aaaaaa_40x100.png",
 		"css/images/ui-bg_flat_75_ffffff_40x100.png",
 		"css/images/ui-bg_glass_55_fbf9ee_1x400.png",
@@ -47,12 +46,10 @@
 		"css/images/ui-icons_888888_256x240.png",
 		"css/images/ui-icons_cd0a0a_256x240.png",
 
-		/* jQuery Tools */
 		"css/jquery-tools/dateinput-next.gif",
 		"css/jquery-tools/dateinput-prev.gif",
 		"css/jquery-tools/tooltip-black-arrow.png",
 
-		/* Internal */
 		"img/left.png",
 		"img/refresh.png",
 		"img/right.png",

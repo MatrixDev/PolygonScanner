@@ -28,9 +28,11 @@
 				url: 'manifest.json',
 				dataType: 'json',
 				success: function(data, textStatus, jqXHR) {
+					console.debug(data);
 					callback(data.version);
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
+					console.debug(textStatus + ' ' + errorThrown);
 					callback('unknown');
 				}
 			});
