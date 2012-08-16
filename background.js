@@ -1,15 +1,3 @@
-<script src="js/jquery/jquery.tools.min.js"></script>
-<script src="js/core/gl.js"></script>
-<script src="js/core/db.js"></script>
-<script src="js/core/api.js"></script>
-<script src="js/core/user.js"></script>
-<script src="js/core/version.js"></script>
-<script src="js/core/location.js"></script>
-<script src="js/utils/base64.js"></script>
-<script src="js/utils/sprintf.js"></script>
-
-<script>
-
 //////////////////////////////////////////////////////////////////////
 chrome.browserAction.onClicked.addListener(function(tab) {
 
@@ -68,5 +56,3 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 
     chrome.tabs.create({ url: "options.html" });
 })();
-
-</script>

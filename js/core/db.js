@@ -46,14 +46,14 @@
 
 		//////////////////////////////////////////////////////////////////////
 		getUserId: function(callback) {
-			var id = parseInt(localStorage.userId);
+			var id = parseInt(localStorage.userId, 10);
 
 			callback(isNaN(id) ? -1 : id);
 		},
 
 		//////////////////////////////////////////////////////////////////////
 		setUserId: function(id) {
-			id = parseInt(id);
+			id = parseInt(id, 10);
 			if (!isNaN(id)) {
 				localStorage.userId = id;
 			}

@@ -130,7 +130,7 @@
 		for (var index = 0; index < info.length; ++index) {
 			var days = (index < info.length - 1) ? 1 : (info.length - 1);
 
-			var diff = parseInt(info[index].totalMin - days * 8 * 60);
+			var diff = parseInt(info[index].totalMin - days * 8 * 60, 10);
 			var time = sprintf('%02d:%02d', Math.abs(diff / 60), Math.abs(diff % 60));
 
 			html += '<td class="' + ((diff >= 0) ? 'gl-positive' : 'gl-negative') + ' ' + (info[index].isToday ? 'gl-today' : '') + '">' + time + '</td>';
@@ -205,6 +205,9 @@
 		);
 
 		gl.api.userInfo(selector.user().id, src, dst, function(info) {
+			for (var index = 0; index < 30; ++index) {
+				$('#B22_1_' + index).val('');
+			}
 			for (var index = 0; index < info.length; ++index) {
 				if (!info[index].date) continue;
 
