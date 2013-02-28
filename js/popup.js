@@ -34,7 +34,7 @@
 
 	popup.find('[title]').tooltip({ tipClass: 'gl-tooltip', position: 'bottom center', effect: 'fade', offset: [10, 0], predelay: 500 });
 
-	if ($('#N57').size() == 0) {
+	if ($('#N56').size() == 0) {
 		autoFill.hide();
 	}
 
@@ -187,7 +187,7 @@
 
 	//////////////////////////////////////////////////////////////////////
 	autoFill.click(function() {
-		var timeSelect = $('#N57');
+		var timeSelect = $('#N56');
 		if (timeSelect.size() == 0) {
 			return;
 		}
