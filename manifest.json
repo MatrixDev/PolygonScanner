@@ -73,7 +73,5 @@
 		"http://portal-ua.globallogic.com/polygon-lviv/",
 		"http://*/*",
 		"https://*/*"
-	],
-
-	"update_url": "https://raw.github.com/MatrixDev/PolygonScanner/master/updates.xml"
+	]
 }
