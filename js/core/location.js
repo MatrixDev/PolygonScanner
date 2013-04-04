@@ -8,8 +8,8 @@
 	window.gl.location = {
 
 		all: [
-			{ name: 'Lviv', url: 'http://portal-ua.globallogic.com/polygon-lviv/' },
-			{ name: 'Kyiv', url: 'http://portal-ua.globallogic.com/polygon/' },
+			{ name: 'Lviv', url: 'https://portal-ua.globallogic.com/polygon-lviv/' },
+			{ name: 'Kyiv', url: 'https://portal-ua.globallogic.com/polygon/' },
 			{ name: 'Kharkiv', url: 'https://portal-ua.globallogic.com/polygon-kharkiv/' }
 		],
 

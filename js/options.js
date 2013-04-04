@@ -3,17 +3,16 @@ $(document).ready(function() {
 	var controls = {
 		apply:		$('#apply').button(),
 		selector:	$('#user_id').userSelector().data('userSelector'),
-		location:	$('#location')
+		location:	$('#location'),
+		login:		$('#login'),
+		password:	$('#password')
 	};
 
-//	var login = $('#login');
-//	var password = $('#password');
-
 	//////////////////////////////////////////////////////////////////////
-/*	gl.db.getCredentials(function(l, p) {
-		login.val(l);
-		password.val(p);
-	});*/
+	gl.db.getCredentials(function(login, password) {
+		controls.login.val(login);
+		controls.password.val(password);
+	});
 
 	//////////////////////////////////////////////////////////////////////
 	$.each(window.gl.location.all, function(index, value) {
@@ -36,11 +35,15 @@ $(document).ready(function() {
 
 		gl.db.setUserId((user != null) ? user.id : -1);
 		gl.db.setLocation(controls.location.val());
-		//gl.db.setCredentials(login.val(), password.val());
+		gl.db.setCredentials(controls.login.val(), controls.password.val());
 
-		chrome.tabs.getCurrent(function (tab) {
-			chrome.tabs.remove(tab.id);
-		});
+		if (user != null) {
+			chrome.tabs.getCurrent(function (tab) {
+				chrome.tabs.remove(tab.id);
+			});
+		} else {
+			controls.selector.root().click();
+		}
 	});
 
 });

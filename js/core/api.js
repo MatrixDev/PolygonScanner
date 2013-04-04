@@ -143,16 +143,22 @@
 
 	//////////////////////////////////////////////////////////////////////
 	function send(method, data, callback) {
+		var credentials = null;
+		window.gl.db.core.getCredentials(function(login, password) {
+			if (login.length > 0 && password.length > 0) {
+				credentials = { login: login, password: password };
+			}
+		});
+
 		$.ajax({
 			url: window.gl.location.core.current().url,
 			method: method,
 			data: data,
 			dataType: 'html',
 			beforeSend: function(xhr) {
-				/*var credentials = db.credentials();
-				if (credentials != null) { // supported only NTLM Authorization
+				if (credentials != null) {
 					xhr.setRequestHeader('Authorization', 'Basic ' + Base64.encode(credentials.login + ':' + credentials.password));
-				}*/
+				}
 			},
 			success: function(data) {
 				callback(true, data);
