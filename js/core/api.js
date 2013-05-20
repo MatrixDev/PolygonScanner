@@ -89,14 +89,27 @@
 				}
 
 				var info = [];
+				var events = [];
 
 				$(data).find('tr').parent().children().each(function(index, element) {
+					if (index <= 0) return;
+
 					var contents = $(element).contents().filter('th');
-					if (index > 0 && contents.size() > 0) {
-						var object = {};
+					if (contents.size() > 0) {
+						var object = {
+							events: events
+						};
 						parseDate(object, $(contents[5]).text());
 						parseTime(object, $(contents[3]).text());
 						info.push(object);
+
+						events = [];
+					} else {
+						contents = $(element).contents().filter('td');
+						var e = $(contents[5]).text();
+						if (e && (e = e.replace(/^\s+|\s+$/g, '')).length > 0) {
+							events.push(e);
+						}
 					}
 				});
 				

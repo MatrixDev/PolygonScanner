@@ -20,6 +20,7 @@
 				</div>\
 				<div id="gl_table_content">\
 				</div>\
+				<div class="gl-footer">* contains some extraordinary event(s). Hover to see more information</div>\
 			</div>\
 		</div>\
 	').appendTo('body').draggable({ cancel: '.gl-header, .gl-content', cursor: 'move', stop: handleDragStop }).css('position', 'fixed');
@@ -32,7 +33,7 @@
 	var daySrc = popup.find('#gl_src').dateinput().data('dateinput');
 	var dayDst = popup.find('#gl_dst').dateinput().data('dateinput');
 
-	popup.find('[title]').tooltip({ tipClass: 'gl-tooltip', position: 'bottom center', effect: 'fade', offset: [10, 0], predelay: 500 });
+	enablePopup(popup);
 
 	if ($('#N56').size() == 0) {
 		autoFill.hide();
@@ -81,65 +82,79 @@
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	function handleSuccess(info) {
-		/*var html = '<table>';
-		html += '<tr>';
-		html += '<th style="width: 120px;">Дата</th>';
-		html += '<th style="width: 75px;">Час</th>';
-		html += '<th style="width: 75px;">Оракл</th>';
-		html += '</tr>';
-		for (var index = 0; index < info.length; ++index) {
-			var date = new Date(info[index].date);
-			date = sprintf('%02d.%02d.%04d', date.getDate(), date.getMonth() + 1, date.getFullYear());
+	function handleSuccess(infos) {
+		var table = $('<table cellspacing="0" cellpadding="0"></table>').appendTo(content.empty());
 
-			html += '<tr>';
-			html += '<td>' + ((index != info.length - 1) ? date : '<b>Total</b>') + '</td>';
-			html += '<td>' + info[index].time + '</td>';
-			html += '<td>' + info[index].oracle + '</td>';
-			html += '</tr>';
+		var tr = $('<tr><th>Date</th></tr>').appendTo(table);
+		for (var index = 0; index < infos.length; ++index) {
+			var info = infos[index];
+
+			var date;
+			if (index < infos.length - 1) {
+				date = new Date(info.date);
+				date = sprintf('%02d.%02d', date.getDate(), date.getMonth() + 1);
+				if (info.events.length > 0) {
+					date += '*';
+				}
+			} else {
+				date = 'Total';
+			}
+
+			var th = $('<th></th>').text(date).appendTo(tr);
+			if (info.isToday) {
+				th.addClass('gl-today');
+			}
+			if (info.events.length > 0) {
+				th.attr('title', info.events.join('\n'));
+			}
 		}
-		html += '</table>';*/
 
-		var html = '<table cellspacing="0" cellpadding="0">';
+		var tr = $('<tr><th>Time</th></tr>').appendTo(table);
+		for (var index = 0; index < infos.length; ++index) {
+			var info = infos[index];
 
-		html += '<tr>';
-		html += '<th>Date</th>';
-		for (var index = 0; index < info.length; ++index) {
-			var date = new Date(info[index].date);
-			date = sprintf('%02d.%02d', date.getDate(), date.getMonth() + 1);
-			html += '<th class="' + (info[index].isToday ? 'gl-today' : '') + '">' + ((index < info.length - 1) ? date : 'Total') + '</th>';
+			var td = $('<td></td>').text(info.time).appendTo(tr);
+			if (info.isToday) {
+				td.addClass('gl-today');
+			}
 		}
-		html += '</tr>';
 
-		html += '<tr>';
-		html += '<th>Time</th>';
-		for (var index = 0; index < info.length; ++index) {
-			html += '<td class="' + (info[index].isToday ? 'gl-today' : '') + '">' + info[index].time + '</td>';
+		var tr = $('<tr><th>Oracle</th></tr>').appendTo(table);
+		for (var index = 0; index < infos.length; ++index) {
+			var info = infos[index];
+
+			var td = $('<td></td>').text(info.oracle).appendTo(tr);
+			if (info.isToday) {
+				td.addClass('gl-today');
+			}
 		}
-		html += '</tr>';
 
-		html += '<tr>';
-		html += '<th>Oracle</th>';
-		for (var index = 0; index < info.length; ++index) {
-			html += '<td class="' + (info[index].isToday ? 'gl-today' : '') + '">' + info[index].oracle + '</td>';
-		}
-		html += '</tr>';
+		var tr = $('<tr><th>Diff</th></tr>').appendTo(table);
+		for (var index = 0; index < infos.length; ++index) {
+			var info = infos[index];
 
-		html += '<tr>';
-		html += '<th>Diff</th>';
-		for (var index = 0; index < info.length; ++index) {
-			var days = (index < info.length - 1) ? 1 : (info.length - 1);
-
-			var diff = parseInt(info[index].totalMin - days * 8 * 60, 10);
+			var days = (index < infos.length - 1) ? 1 : (infos.length - 1);
+			var diff = parseInt(info.totalMin - days * 8 * 60, 10);
 			var time = sprintf('%02d:%02d', Math.abs(diff / 60), Math.abs(diff % 60));
 
-			html += '<td class="' + ((diff >= 0) ? 'gl-positive' : 'gl-negative') + ' ' + (info[index].isToday ? 'gl-today' : '') + '">' + time + '</td>';
+			var td = $('<td></td>').text(time).addClass((diff >= 0) ? 'gl-positive' : 'gl-negative').appendTo(tr);
+			if (info.isToday) {
+				td.addClass('gl-today');
+			}
 		}
-		html += '</tr>';
+
+		enablePopup(table);
+
+
+
+
+		/*
 
 		html += '</table>';
 
-		content.html(html);
+		var table = $(html);
+		enablePopup(table);
+		content.empty().append(html);*/
 	}
 
 	//////////////////////////////////////////////////////////////////////
@@ -155,6 +170,11 @@
 
         ui.helper.css('position', 'fixed');
         ui.helper.css('top', top + "px");
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	function enablePopup(root) {
+		root.find('[title]').tooltip({ tipClass: 'gl-tooltip', position: 'bottom center', effect: 'fade', offset: [10, 0], predelay: 500 });
 	}
 
 	//////////////////////////////////////////////////////////////////////
