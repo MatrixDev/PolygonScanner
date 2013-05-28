@@ -184,8 +184,12 @@
 
 	//////////////////////////////////////////////////////////////////////
 	function parseDate(result, date) {
-		result.date = Date.parse(date.substr('Total time on '.length));
-		result.isToday = (new Date().toDateString() == new Date(result.date).toDateString());
+		var dateMS = Date.parse(date.substr('Total time on '.length));
+		var date = new Date(dateMS);
+
+		result.date = dateMS;
+		result.isToday = (new Date().toDateString() == date.toDateString());
+		result.isWeekend = (date.getDay() == 0) || (date.getDay() == 6);
 	}
 
 	//////////////////////////////////////////////////////////////////////

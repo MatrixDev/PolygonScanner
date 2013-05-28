@@ -1,0 +1,73 @@
+.gl-timesheet
+{
+	width: 100%;
+	cursor: default;
+	text-align: center;
+	font-size: 12px;
+	font-family: Verdana, Sans;
+}
+
+.gl-timesheet, .gl-timesheet tr, .gl-timesheet th, .gl-timesheet td
+{
+	color: #000;
+}
+
+.gl-timesheet th, .gl-timesheet td
+{
+	padding: 3px 10px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.gl-timesheet th
+{
+	background-color: rgba(128, 128, 128, 0.2);
+}
+
+.gl-timesheet .gl-date
+{
+	cursor: pointer;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.gl-timesheet .gl-date:hover
+{
+	background-color: rgba(128, 128, 128, 0.1);
+}
+
+.gl-timesheet .gl-date:active
+{
+	background-color: rgba(128, 128, 128, 0.3);
+}
+
+.gl-timesheet .gl-positive
+{
+	color: green;
+	font-weight: bold;
+}
+
+.gl-timesheet .gl-negative
+{
+	color: red;
+	font-weight: bold;
+}
+
+.gl-timesheet .gl-today
+{
+	background-color: rgba(128, 128, 128, 0.2);
+}
+
+.gl-timesheet .gl-weekend
+{
+	background-color: rgba(128, 255, 128, 0.2);
+}
+
+.gl-timesheet .gl-excluded
+{
+	background-color: rgba(255, 128, 128, 0.2);
+}

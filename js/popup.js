@@ -20,7 +20,11 @@
 				</div>\
 				<div id="gl_table_content">\
 				</div>\
-				<div class="gl-footer">* contains some extraordinary event(s). Hover to see more information</div>\
+				<div class="gl-footer">Hints:<br/>\
+					1. \'*\' contains some extraordinary event(s). Hover to see more information<br/>\
+					2. headers with date can be clicked to exclude day from total work time needed<br/>\
+					3. light-green background indicates a weekend, light-red background indicates excluded days<br/>\
+				</div>\
 			</div>\
 		</div>\
 	').appendTo('body').draggable({ cancel: '.gl-header, .gl-content', cursor: 'move', stop: handleDragStop }).css('position', 'fixed');
@@ -32,8 +36,9 @@
 	var autoFill = popup.find('#gl_fill');
 	var daySrc = popup.find('#gl_src').dateinput().data('dateinput');
 	var dayDst = popup.find('#gl_dst').dateinput().data('dateinput');
+	var timesheet = popup.find('#gl_table_content').timesheet().data('timesheet');
 
-	enablePopup(popup);
+	enableTooltip(popup);
 
 	if ($('#N56').size() == 0) {
 		autoFill.hide();
@@ -78,87 +83,16 @@
 		var date1 = daySrc.getValue();
 		var date2 = dayDst.getValue();
 
-		gl.api.userInfo(user.id, date1, date2, handleSuccess, handleError);
+		gl.api.userInfo(user.id, date1, date2, handleTimesheetSuccess, handleTimesheetError);
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	function handleSuccess(infos) {
-		var table = $('<table cellspacing="0" cellpadding="0"></table>').appendTo(content.empty());
-
-		var tr = $('<tr><th>Date</th></tr>').appendTo(table);
-		for (var index = 0; index < infos.length; ++index) {
-			var info = infos[index];
-
-			var date;
-			if (index < infos.length - 1) {
-				date = new Date(info.date);
-				date = sprintf('%02d.%02d', date.getDate(), date.getMonth() + 1);
-				if (info.events.length > 0) {
-					date += '*';
-				}
-			} else {
-				date = 'Total';
-			}
-
-			var th = $('<th></th>').text(date).appendTo(tr);
-			if (info.isToday) {
-				th.addClass('gl-today');
-			}
-			if (info.events.length > 0) {
-				th.attr('title', info.events.join('\n'));
-			}
-		}
-
-		var tr = $('<tr><th>Time</th></tr>').appendTo(table);
-		for (var index = 0; index < infos.length; ++index) {
-			var info = infos[index];
-
-			var td = $('<td></td>').text(info.time).appendTo(tr);
-			if (info.isToday) {
-				td.addClass('gl-today');
-			}
-		}
-
-		var tr = $('<tr><th>Oracle</th></tr>').appendTo(table);
-		for (var index = 0; index < infos.length; ++index) {
-			var info = infos[index];
-
-			var td = $('<td></td>').text(info.oracle).appendTo(tr);
-			if (info.isToday) {
-				td.addClass('gl-today');
-			}
-		}
-
-		var tr = $('<tr><th>Diff</th></tr>').appendTo(table);
-		for (var index = 0; index < infos.length; ++index) {
-			var info = infos[index];
-
-			var days = (index < infos.length - 1) ? 1 : (infos.length - 1);
-			var diff = parseInt(info.totalMin - days * 8 * 60, 10);
-			var time = sprintf('%02d:%02d', Math.abs(diff / 60), Math.abs(diff % 60));
-
-			var td = $('<td></td>').text(time).addClass((diff >= 0) ? 'gl-positive' : 'gl-negative').appendTo(tr);
-			if (info.isToday) {
-				td.addClass('gl-today');
-			}
-		}
-
-		enablePopup(table);
-
-
-
-
-		/*
-
-		html += '</table>';
-
-		var table = $(html);
-		enablePopup(table);
-		content.empty().append(html);*/
+	function handleTimesheetSuccess(infos) {
+		timesheet.updateInfos(infos);
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	function handleError(error) {
+	function handleTimesheetError(error) {
 		content.html(error);
 	}
 
@@ -173,7 +107,7 @@
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	function enablePopup(root) {
+	function enableTooltip(root) {
 		root.find('[title]').tooltip({ tipClass: 'gl-tooltip', position: 'bottom center', effect: 'fade', offset: [10, 0], predelay: 500 });
 	}
 

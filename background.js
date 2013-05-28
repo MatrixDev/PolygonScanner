@@ -7,6 +7,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		'css/jquery-tools/tooltip.css',
 		'css/general.css',
 		'css/user-selector.css',
+		'css/timesheet.css',
 		'css/popup.css'
 	];
 
@@ -20,6 +21,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		'js/utils/base64.js',
 		'js/utils/sprintf.js',
 		'js/controls/user-selector.js',
+		'js/controls/timesheet.js',
 		'js/popup.js'
 	];
 
