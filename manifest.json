@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 
 	"name": "Polygon Scanner",
-	"version": "2.2.1",
+	"version": "2.3",
 	"description": "GlobalLogic polygon scanner by Rostyslav Lesovyi",
 
 	"icons" : {
@@ -60,7 +60,9 @@
 		"img/loading.gif",
 		"img/reload.png",
 		"img/edit.png",
-		"img/search.png"
+		"img/search.png",
+		"img/plus.png",
+		"img/minus.png"
 	],
 	
 	"browser_action": {

@@ -2,6 +2,13 @@
 
 	$('.gl-popup').remove();
 
+	var hints = [
+		'\'*\' contains some extraordinary event(s). Hover to see more information',
+		'headers with date can be clicked to exclude day from total work time needed',
+		'light-green background indicates a weekend, light-red background indicates excluded days',
+		'<font color="#f00">NEW!</font> time distributions between different tasks can be set in the settings'
+	];
+
 	var popup = $('\
 		<div class="gl-popup">\
 			<div class="gl-header">\
@@ -20,15 +27,11 @@
 				</div>\
 				<div id="gl_table_content">\
 				</div>\
-				<div class="gl-footer">Hints:<br/>\
-					1. \'*\' contains some extraordinary event(s). Hover to see more information<br/>\
-					2. headers with date can be clicked to exclude day from total work time needed<br/>\
-					3. light-green background indicates a weekend, light-red background indicates excluded days<br/>\
-				</div>\
+				<div class="gl-footer">Hint: ' + hints[parseInt(Math.random() * 100, 10) % hints.length] + '</div>\
 			</div>\
 		</div>\
 	').appendTo('body').draggable({ cancel: '.gl-header, .gl-content', cursor: 'move', stop: handleDragStop }).css('position', 'fixed');
-
+	
 	var offset = 0;
 	var content = popup.find('#gl_table_content');
 	var selector = popup.find('#gl_user_id').userSelector({ callback: updateUser }).data('userSelector');
@@ -158,17 +161,44 @@
 			parseInt(timeRange.substr(19, 2), 10)
 		);
 
-		gl.api.userInfo(selector.user().id, src, dst, function(info) {
-			for (var index = 0; index < 30; ++index) {
-				$('#B22_1_' + index).val('');
-			}
-			for (var index = 0; index < info.length; ++index) {
-				if (!info[index].date) continue;
+		gl.api.userInfo(selector.user().id, src, dst, function(infos) {
+			gl.db.getTimeWraps(function(wraps) {
 
-				var offset = (info[index].date - src.getTime()) / (24 * 60 * 60 * 1000);
+				var baseId = '#B22_';
 
-				$('#B22_1_' + offset).val(info[index].oracle);
-			}
+				// clear
+				for (var dayIndex = 0; dayIndex < 30; ++dayIndex) {
+					for (var taskIndex = 0; taskIndex < 10; ++taskIndex) {
+						$(baseId + taskIndex + '_' + dayIndex).val('');
+					}
+				}
+
+				for (var infoIndex = 0; infoIndex < infos.length; ++infoIndex) {
+					var info = infos[infoIndex];
+					if (!info.date) {
+						continue;
+					}
+
+					var dayIndex = new Date(info.date).getDay();
+					var offset = (info.date - src.getTime()) / (24 * 60 * 60 * 1000);
+
+					var weightTotal = 0;
+					for (var taskIndex = 0; taskIndex < wraps.length; ++taskIndex) {
+						var weight = parseInt(wraps[taskIndex][dayIndex], 10);
+						if (!isNaN(weight)) {
+							weightTotal += weight;
+						}
+					}
+
+					for (var taskIndex = 0; taskIndex < wraps.length; ++taskIndex) {
+						var weight = parseInt(wraps[taskIndex][dayIndex], 10);
+						if (!isNaN(weight)) {
+							$(baseId + (taskIndex + 1) + '_' + offset).val(parseInt(info.oracle * weight / weightTotal * 100, 10) / 100);
+						}
+					}
+				}
+
+			});
 		}, function(error) {
 			alert('failed to fetch data from polygon: ' + error);
 		});

@@ -35,6 +35,16 @@
 		//////////////////////////////////////////////////////////////////////
 		setLocation: function(location) {
 			gl.invoke('db', 'setLocation', [location]);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		getTimeWraps: function(callback) {
+			gl.invoke('db', 'getTimeWraps', [], callback);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setTimeWraps: function(wraps) {
+			gl.invoke('db', 'setTimeWraps', [wraps]);
 		}
 
 	};
@@ -105,6 +115,20 @@
 		//////////////////////////////////////////////////////////////////////
 		setInstallTime: function(time) {
 			localStorage.installTime = time;
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		getTimeWraps: function(callback) {
+			var wraps = JSON.parse(localStorage.timeWraps || '{}');
+			if (!(wraps instanceof Array) || !(wraps[0] instanceof Array)) {
+				wraps = [[1, 1, 1, 1, 1, 1, 1]];
+			}
+			callback(wraps);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setTimeWraps: function(wraps) {
+			localStorage.timeWraps = JSON.stringify(wraps);
 		}
 
 	};

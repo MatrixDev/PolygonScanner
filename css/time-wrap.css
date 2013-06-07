@@ -1,0 +1,27 @@
+.gl-timewrap
+{
+	width: 100%;
+}
+
+.gl-timewrap .gl-button
+{
+	width: 32px;
+	height: 32px;
+}
+
+.gl-timewrap .gl-add-line
+{
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/plus.png');
+}
+
+.gl-timewrap .gl-rem-line
+{
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/minus.png');
+}
+
+.gl-timewrap input
+{
+	width: 100%;
+	margin: 4px;
+	padding: 4px;
+}

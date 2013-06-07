@@ -5,7 +5,9 @@ $(document).ready(function() {
 		selector:	$('#user_id').userSelector().data('userSelector'),
 		location:	$('#location'),
 		login:		$('#login'),
-		password:	$('#password')
+		password:	$('#password'),
+
+		timewrap:	$('#time_wrap').timewrap().data('timewrap')
 	};
 
 	//////////////////////////////////////////////////////////////////////
