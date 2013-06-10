@@ -76,10 +76,8 @@
 		function addChangeHandler(input, task, day) {
 			return input.change(function() {
 				var val = parseInt(input.val(), 10);
-				if (!isNaN(val)) {
-					conf.wraps[task][day] = val;
-					save();
-				}
+				conf.wraps[task][day] = isNaN(val) ? null : val;
+				save();
 			});
 		}
 
