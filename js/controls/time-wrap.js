@@ -8,7 +8,7 @@
 			count: 4,
 			days: ['Sun', 'Mon', 'Tue', 'Web', 'Thu', 'Fri', 'Sat'],
 			wrapsMin: 1,
-			wrapsMax: 6
+			wrapsMax: 30
 		}
 	};
 

@@ -168,7 +168,7 @@
 
 				// clear
 				for (var dayIndex = 0; dayIndex < 30; ++dayIndex) {
-					for (var taskIndex = 0; taskIndex < 10; ++taskIndex) {
+					for (var taskIndex = 0; taskIndex < 30; ++taskIndex) {
 						$(baseId + taskIndex + '_' + dayIndex).val('');
 					}
 				}
