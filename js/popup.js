@@ -182,6 +182,8 @@
 					var dayIndex = new Date(info.date).getDay();
 					var offset = (info.date - src.getTime()) / (24 * 60 * 60 * 1000);
 
+					// Calculating total weight
+
 					var weightTotal = 0;
 					for (var taskIndex = 0; taskIndex < wraps.length; ++taskIndex) {
 						var weight = parseInt(wraps[taskIndex][dayIndex], 10);
@@ -190,10 +192,36 @@
 						}
 					}
 
+					// Calculating time per task
+
+					var timeLeft = info.oracle;
+					var timePerTask = new Array(wraps.length);
+
 					for (var taskIndex = 0; taskIndex < wraps.length; ++taskIndex) {
 						var weight = parseInt(wraps[taskIndex][dayIndex], 10);
-						if (!isNaN(weight)) {
-							$(baseId + (taskIndex + 1) + '_' + offset).val(parseInt(info.oracle * weight / weightTotal * 100, 10) / 100);
+						if (isNaN(weight)) {
+							continue;
+						}
+
+						var time = Math.floor(info.oracle * weight / weightTotal * 100) / 100;
+						timeLeft -= time;
+						timePerTask[taskIndex] = time;
+					}
+
+					// Adding left time for more precision
+
+					for (var taskIndex = timePerTask.length - 1; taskIndex >= 0; --taskIndex) {
+						if (!isNaN(timePerTask[taskIndex])) {
+							timePerTask[taskIndex] += timeLeft;
+							break;
+						}
+					}
+
+					// Filling the form
+
+					for (var taskIndex = 0; taskIndex < timePerTask.length; ++taskIndex) {
+						if (!isNaN(timePerTask[taskIndex])) {
+							$(baseId + (taskIndex + 1) + '_' + offset).val(timePerTask[taskIndex].toFixed(2));
 						}
 					}
 				}
