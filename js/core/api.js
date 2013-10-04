@@ -19,8 +19,11 @@
 		},
 
 		//////////////////////////////////////////////////////////////////////
-		userInfo: function(id, dateFrom, dateTo, success, error) {
-			gl.invoke('api', 'userInfo', [id, dateFrom, dateTo], function(result, data) {
+		userInfo: function(id, dateSrc, dateDst, success, error) {
+			dateSrc = new Date(dateSrc).getTime();
+			dateDst = new Date(dateDst).getTime();
+
+			gl.invoke('api', 'userInfo', [id, dateSrc, dateDst], function(result, data) {
 				if (result) {
 					if (success) success(data);
 				} else {
