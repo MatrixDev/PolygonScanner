@@ -1,3 +1,5 @@
+// debugger;
+
 (function($) {
 
 	$('.gl-popup').remove();
@@ -180,7 +182,7 @@
 					}
 
 					var dayIndex = new Date(info.date).getDay();
-					var offset = (info.date - src.getTime()) / (24 * 60 * 60 * 1000);
+					var offset = Math.round((info.date - src.getTime()) / (24 * 60 * 60 * 1000));
 
 					// Calculating total weight
 
