@@ -45,7 +45,7 @@
 
 	enableTooltip(popup);
 
-	if ($('#N56').size() == 0) {
+	if ($('#N57').size() == 0) {
 		autoFill.hide();
 	}
 
@@ -146,7 +146,7 @@
 
 	//////////////////////////////////////////////////////////////////////
 	autoFill.click(function() {
-		var timeSelect = $('#N56');
+		var timeSelect = $('#N57');
 		if (timeSelect.size() == 0) {
 			return;
 		}
