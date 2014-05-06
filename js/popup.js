@@ -8,7 +8,8 @@
 		'\'*\' contains some extraordinary event(s). Hover to see more information',
 		'headers with date can be clicked to exclude day from total work time needed',
 		'light-green background indicates a weekend, light-red background indicates excluded days',
-		'<font color="#f00">NEW!</font> time distributions between different tasks can be set in the settings'
+		'time distributions between different tasks can be set in the settings',
+        '<font color="#f00">NEW!</font> now with Mykolaiv location'
 	];
 
 	var popup = $('\
