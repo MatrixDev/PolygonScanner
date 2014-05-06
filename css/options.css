@@ -63,3 +63,9 @@ body
 {
 	display: none;
 }
+
+.options .version-link
+{
+    margin-top: 20px;
+    text-align: center;
+}
