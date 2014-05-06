@@ -10,7 +10,8 @@
 		all: [
 			{ name: 'Lviv', url: 'https://portal-ua.globallogic.com/polygon-lviv/' },
 			{ name: 'Kyiv', url: 'https://portal-ua.globallogic.com/polygon/' },
-			{ name: 'Kharkiv', url: 'https://portal-ua.globallogic.com/polygon-kharkiv/' }
+			{ name: 'Kharkiv', url: 'https://portal-ua.globallogic.com/polygon-kharkiv/' },
+            { name: 'Mykolaiv', url: 'https://portal-ua.globallogic.com/polygon-mykolaiv/' }
 		],
 
 		//////////////////////////////////////////////////////////////////////
