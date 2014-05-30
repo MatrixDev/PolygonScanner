@@ -46,7 +46,8 @@
 
 	enableTooltip(popup);
 
-	if ($('#N57').size() == 0) {
+	var timecardPeriod = $("[name='TimecardPeriodList']");
+	if (timecardPeriod.size() == 0) {
 		autoFill.hide();
 	}
 
@@ -147,12 +148,11 @@
 
 	//////////////////////////////////////////////////////////////////////
 	autoFill.click(function() {
-		var timeSelect = $('#N57');
-		if (timeSelect.size() == 0) {
+		if (timecardPeriod.size() == 0) {
 			return;
 		}
 
-		var timeRange = timeSelect.val();
+		var timeRange = timecardPeriod.val();
 		var src = new Date(
 			parseInt(timeRange.substr(0, 4), 10),
 			parseInt(timeRange.substr(5, 2), 10) - 1,
