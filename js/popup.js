@@ -9,7 +9,8 @@
 		'headers with date can be clicked to exclude day from total work time needed',
 		'light-green background indicates a weekend, light-red background indicates excluded days',
 		'time distributions between different tasks can be set in the settings',
-        '<font color="#f00">NEW!</font> now with Mykolaiv location'
+        'now with Mykolaiv location',
+		'<font color="#f00">NEW!</font> moved to new API (bugs are possible)'
 	];
 
 	var popup = $('\
@@ -53,7 +54,7 @@
 
 	//////////////////////////////////////////////////////////////////////
 	function updateUser() {
-		window.gl.user.isAtWork(selector.user().id, function(is) {
+		window.gl.user.isAtWork(selector.user(), function(is) {
 			atWork[is ? 'fadeIn' : 'fadeOut']();
 		}, function() {
 			atWork.fadeOut();
@@ -90,7 +91,7 @@
 		var date1 = daySrc.getValue();
 		var date2 = dayDst.getValue();
 
-		gl.api.userInfo(user.id, date1, date2, handleTimesheetSuccess, handleTimesheetError);
+		gl.api.userInfo(user, date1, date2, handleTimesheetSuccess, handleTimesheetError);
 	}
 
 	//////////////////////////////////////////////////////////////////////
@@ -164,7 +165,7 @@
 			parseInt(timeRange.substr(19, 2), 10)
 		);
 
-		gl.api.userInfo(selector.user().id, src, dst, function(infos) {
+		gl.api.userInfo(selector.user(), src, dst, function(infos) {
 			gl.db.getTimeWraps(function(wraps) {
 
 				var baseId = '#B22_';

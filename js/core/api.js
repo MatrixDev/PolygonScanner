@@ -19,11 +19,11 @@
 		},
 
 		//////////////////////////////////////////////////////////////////////
-		userInfo: function(id, dateSrc, dateDst, success, error) {
+		userInfo: function(user, dateSrc, dateDst, success, error) {
 			dateSrc = new Date(dateSrc).getTime();
 			dateDst = new Date(dateDst).getTime();
 
-			gl.invoke('api', 'userInfo', [id, dateSrc, dateDst], function(result, data) {
+			gl.invoke('api', 'userInfo', [user, dateSrc, dateDst], function(result, data) {
 				if (result) {
 					if (success) success(data);
 				} else {
@@ -33,8 +33,8 @@
 		},
 
 		//////////////////////////////////////////////////////////////////////
-		userIsAtWork: function(id, success, error) {
-			gl.invoke('api', 'userIsAtWork', [id], function(result, data) {
+		userIsAtWork: function(user, success, error) {
+			gl.invoke('api', 'userIsAtWork', [user], function(result, data) {
 				if (result) {
 					if (success) success(data);
 				} else {
@@ -52,19 +52,21 @@
 
 		//////////////////////////////////////////////////////////////////////
 		users: function(callback) {
-			get(null, function(success, data) {
+			get('employees.php', {}, function(success, data) {
 				if (!success) {
 					if (callback != null) callback(false, data);
 					return;
 				}
 
-				var children = $(data).find('select[name="sid"]').children();
+				data = JSON.parse(data);
 				
 				var users = [];
-				for (var index = 0; index < children.length; ++index) {
-					var elem = $(children[index]);
-					
-					users.push(gl.user(elem.val(), elem.text()));
+				for (var index = 0; index < data.length; ++index) {
+					var user = data[index];
+					var id = user.uid;
+					var zone = user.zone;
+					var name = user.first_name + ' ' + user.last_name;
+					users.push(gl.user(id, name, zone));
 				}
 				
 				if (callback != null) callback(true, users);
@@ -72,93 +74,145 @@
 		},
 
 		//////////////////////////////////////////////////////////////////////
-		userInfo: function(id, dateSrc, dateDst, callback) {
+		userInfo: function(user, dateSrc, dateDst, callback) {
 			dateSrc = new Date(dateSrc);
 			dateDst = new Date(dateDst);
 
-			var postString = sprintf('sid=%d&from_y=%d&from_m=%d&from_d=%d&to_y=%d&to_m=%d&to_d=%d&action=showtime',
-				id,
-				dateSrc.getFullYear(),
-				dateSrc.getMonth() + 1,
-				dateSrc.getDate(),
-				dateDst.getFullYear(),
-				dateDst.getMonth() + 1,
-				dateDst.getDate());
-			
-			post(postString, function(success, data) {
+			data = {
+				zone: user.zone,
+				employeeId: user.id,
+				from: dateSrc.getTime(),
+				till: dateDst.getTime()
+			}
+
+			console.log(user);
+
+			get('events.php', data, function(success, data) {
 				if (!success) {
 					if (callback) callback(false, data);
 					return;
 				}
 
-				var info = [];
-				var events = [];
+				var dayInfo;
+				var dayInfos = [];
+				var lastDate = 0;
+				var lastInTime = 0;
+				var array = JSON.parse(data);
 
-				$(data).find('tr').parent().children().each(function(index, element) {
-					if (index <= 0) return;
+				// Parsing json
+				for (var index = 0; index < array.length; ++index) {
+					var json = array[index];
+					var entered = json.direction == 'in';
+					var datetime = new Date(json.timestamp);
+					var datetimeTS = datetime.getTime();
+					var date = new Date(datetime.toDateString());
+					var dateTS = date.getTime();
 
-					var contents = $(element).contents().filter('th');
-					if (contents.size() > 0) {
-						var object = {
-							events: events
-						};
-						parseDate(object, $(contents[5]).text());
-						parseTime(object, $(contents[3]).text());
-						info.push(object);
+					// Skip non-working trackers
+					if (!json.working) {
+						continue;
+					}
 
-						events = [];
+					// New changed
+					if (lastDate != dateTS) {
+						if (lastInTime != 0) {
+							dayInfo.events.push('still in office');
+							// TODO add time
+						}
+						lastInTime = 0;
+						lastDate = dateTS;
+
+						dayInfos.push(dayInfo = {
+							events: [],
+							totalMin: 0,
+							date: date.toDateString(),
+							isToday: new Date().toDateString() == date.toDateString(),
+							isWeekend: (date.getDay() == 0) || (date.getDay() == 6)
+						});
+					}
+
+					// Calculating time
+					if (entered) {
+						if (lastInTime != 0) {
+							dayInfo.events.push('Entered office without exiting');
+						}
+						lastInTime = datetimeTS;
 					} else {
-						contents = $(element).contents().filter('td');
-						var e = $(contents[5]).text();
-						if (e && (e = e.replace(/^\s+|\s+$/g, '')).length > 0) {
-							events.push(e);
+						if (lastInTime == 0) {
+							dayInfo.events.push('Left office without entering');
+						} else {
+							dayInfo.totalMin += (datetimeTS - lastInTime) / (60 * 1000);
+							lastInTime = 0;
 						}
 					}
-				});
-				
-				callback(true, info);
+				}
+
+				// Generating total time
+				if (dayInfos.length > 0) {
+					dayInfos.push(dayInfo = { events: [], totalMin: 0 });
+					for (var index = 0; index < dayInfos.length - 1; ++index) {
+						dayInfo.totalMin += dayInfos[index].totalMin;
+					}
+				}
+
+				// Generating time/oracle strings
+				for (var index = 0; index < dayInfos.length; ++index) {
+					dayInfo = dayInfos[index];
+
+					var hours = parseInt(dayInfo.totalMin / 60, 10);
+					var minutes = parseInt(dayInfo.totalMin % 60, 10);
+					var oracle = parseInt(minutes * 100 / 60, 10);
+
+					dayInfo.time = sprintf('%02d:%02d', hours, minutes);
+					dayInfo.oracle = sprintf('%02d.%02d', hours, oracle);
+				}
+
+				callback(true, dayInfos);
 			});
 		},
 
 		//////////////////////////////////////////////////////////////////////
-		userIsAtWork: function(id, callback) {
-			var today = new Date();
+		userIsAtWork: function(user, callback) {
+			data = {
+				zone: user.zone,
+				employeeId: user.id
+			}
 
-			var postString = sprintf('sid=%d&from_y=%d&from_m=%d&from_d=%d&to_y=%d&to_m=%d&to_d=%d&action=showtime',
-				id,
-				today.getFullYear(),
-				today.getMonth() + 1,
-				today.getDate(),
-				today.getFullYear(),
-				today.getMonth() + 1,
-				today.getDate());
-			
-			post(postString, function(success, data) {
+			get('last_seen.php', data, function(success, data) {
 				if (!success) {
 					if (callback) callback(false, data);
 					return;
 				}
 
-				callback(true, data.indexOf('not exited, possibly still in office') >= 0);
+				var json = JSON.parse(data);
+
+				var date = new Date(json.timestamp);
+				date = new Date(date.toDateString());
+				date = date.getTime();
+
+				var today = new Date();
+				today = new Date(today.toDateString());
+				today = today.getTime();
+
+				callback(true, today == date && json.direction == 'in');
 			});
 		}
-
 	};
 
 	//////////////////////////////////////////////////////////////////////
 	// Helpers
 	//////////////////////////////////////////////////////////////////////
-	function get(data, callback) {
-		send('GET', data, callback);
+	function get(url, data, callback) {
+		send('GET', url, data, callback);
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	function post(data, callback) {
-		send('POST', data, callback);
+	function post(url, data, callback) {
+		send('POST', url, data, callback);
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	function send(method, data, callback) {
+	function send(method, url, data, callback) {
 		var credentials = null;
 		window.gl.db.core.getCredentials(function(login, password) {
 			if (login.length > 0 && password.length > 0) {
@@ -167,7 +221,7 @@
 		});
 
 		$.ajax({
-			url: window.gl.location.core.current().url,
+			url: 'https://portal-ua.globallogic.com/officetime/json/' + url,
 			method: method,
 			data: data,
 			dataType: 'html',
@@ -183,34 +237,6 @@
 				callback(false, xhr.statusText + ' (' + textStatus + ')');
 			}
 		});
-	}
-
-	//////////////////////////////////////////////////////////////////////
-	function parseDate(result, date) {
-		var dateMS = Date.parse(date.substr('Total time on '.length));
-		var date = new Date(dateMS);
-
-		result.date = dateMS;
-		result.isToday = (new Date().toDateString() == date.toDateString());
-		result.isWeekend = (date.getDay() == 0) || (date.getDay() == 6);
-	}
-
-	//////////////////////////////////////////////////////////////////////
-	function parseTime(result, time) {
-		var parts = time.split(':');
-
-		var total_min = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
-		if (total_min < 0) {
-			total_min = 0;
-		}
-		
-		var hours = parseInt(total_min / 60, 10);
-		var minutes = parseInt(total_min % 60, 10);
-		var oracle = parseInt(minutes * 100 / 60, 10);
-
-		result.totalMin = total_min;
-		result.time = sprintf('%02d:%02d', hours, minutes);
-		result.oracle = sprintf('%02d.%02d', hours, oracle);
 	}
 
 })(jQuery);

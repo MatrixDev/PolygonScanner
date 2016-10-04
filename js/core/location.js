@@ -8,10 +8,10 @@
 	window.gl.location = {
 
 		all: [
-			{ name: 'Lviv', url: 'https://portal-ua.globallogic.com/polygon-lviv/' },
-			{ name: 'Kyiv', url: 'https://portal-ua.globallogic.com/polygon/' },
-			{ name: 'Kharkiv', url: 'https://portal-ua.globallogic.com/polygon-kharkiv/' },
-            { name: 'Mykolaiv', url: 'https://portal-ua.globallogic.com/polygon-mykolaiv/' }
+			{ name: 'Lviv', code: 'LWO', url: 'https://portal-ua.globallogic.com/polygon-lviv/' },
+			{ name: 'Kyiv', code: 'KBP', url: 'https://portal-ua.globallogic.com/polygon/' },
+			{ name: 'Kharkiv', code: 'HRK', url: 'https://portal-ua.globallogic.com/polygon-kharkiv/' },
+            { name: 'Mykolaiv', code: 'ODS', url: 'https://portal-ua.globallogic.com/polygon-mykolaiv/' }
 		],
 
 		//////////////////////////////////////////////////////////////////////

@@ -5,8 +5,8 @@
 	//////////////////////////////////////////////////////////////////////
 	// User
 	//////////////////////////////////////////////////////////////////////
-	window.gl.user = function(id, name) {
-		return { id: id, name: name };
+	window.gl.user = function(id, name, zone) {
+		return { id: id, name: name, zone: zone };
 	};
 
 	//////////////////////////////////////////////////////////////////////
@@ -27,10 +27,10 @@
 	};
 
 	//////////////////////////////////////////////////////////////////////
-	window.gl.user.isAtWork = function(id, success, error) {
+	window.gl.user.isAtWork = function(user, success, error) {
 		var today = new Date().getTime();
 
-		window.gl.api.userIsAtWork(id, success, error);
+		window.gl.api.userIsAtWork(user, success, error);
 	};
 
 })(jQuery);

@@ -35,7 +35,7 @@ $(document).ready(function() {
 	controls.apply.click(function() {
 		var user = controls.selector.user();
 
-		gl.db.setUserId((user != null) ? user.id : -1);
+		gl.db.setUser(user);
 		gl.db.setLocation(controls.location.val());
 		gl.db.setCredentials(controls.login.val(), controls.password.val());
 

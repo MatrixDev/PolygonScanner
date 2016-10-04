@@ -8,13 +8,13 @@
 	window.gl.db = {
 
 		//////////////////////////////////////////////////////////////////////
-		getUserId: function(callback) {
-			gl.invoke('db', 'getUserId', [], callback);
+		getUser: function(callback) {
+			gl.invoke('db', 'getUser', [], callback);
 		},
 
 		//////////////////////////////////////////////////////////////////////
-		setUserId: function(id) {
-			gl.invoke('db', 'setUserId', [id]);
+		setUser: function(id) {
+			gl.invoke('db', 'setUser', [id]);
 		},
 
 		//////////////////////////////////////////////////////////////////////
@@ -55,18 +55,21 @@
 	window.gl.db.core = {
 
 		//////////////////////////////////////////////////////////////////////
-		getUserId: function(callback) {
-			var id = parseInt(localStorage.userId, 10);
-
-			callback(isNaN(id) ? -1 : id);
+		getUser: function(callback) {
+			var user;
+			try {
+				user = JSON.parse(localStorage.user);
+			} catch (e) {
+			}
+			if (user == null || typeof user != 'object') {
+				user = undefined;
+			}
+			callback(user);
 		},
 
 		//////////////////////////////////////////////////////////////////////
-		setUserId: function(id) {
-			id = parseInt(id, 10);
-			if (!isNaN(id)) {
-				localStorage.userId = id;
-			}
+		setUser: function(user) {
+			localStorage.user = JSON.stringify(user);
 		},
 
 		//////////////////////////////////////////////////////////////////////

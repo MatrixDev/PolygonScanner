@@ -32,20 +32,13 @@
 		// Private
 		//////////////////////////////////////////////////////////////////////
 		function CTOR() {
-			gl.db.getUserId(function(id) {
-				if (id >= 0) {
-					loadUser(id);
+			gl.db.getUser(function(user) {
+				if (user) {
+					showUser(user);
 				} else {
 					loadUsers();
 				}
 			});
-		}
-
-		//////////////////////////////////////////////////////////////////////
-		function loadUser(id) {
-			update(null, 'gl-loading', 'Searching...', null);
-
-			gl.user.get(id, showUser, showError);
 		}
 
 		//////////////////////////////////////////////////////////////////////
@@ -56,7 +49,8 @@
 
 				var source = [];
 				for (var index = 0; index < users.length; ++index) {
-					source.push({ label: users[index].name, data: users[index] });
+					var user = users[index];
+					source.push({ label: user.name + ' (' + user.zone + ')', data: users[index] });
 				}
 
 				text.autocomplete({
@@ -78,7 +72,7 @@
 
 		//////////////////////////////////////////////////////////////////////
 		function showUser(user) {
-			update(user, 'gl-edit', user.name, loadUsers);
+			update(user, 'gl-edit', user.name + ' (' + user.zone + ')', loadUsers);
 		}
 
 		//////////////////////////////////////////////////////////////////////
