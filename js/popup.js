@@ -183,8 +183,9 @@
 						continue;
 					}
 
-					var dayIndex = new Date(info.date).getDay();
-					var offset = Math.round((info.date - src.getTime()) / (24 * 60 * 60 * 1000));
+					var date = new Date(info.date);
+					var dayIndex = date.getDay();
+					var offset = Math.round((date.getTime() - src.getTime()) / (24 * 60 * 60 * 1000));
 
 					// Calculating total weight
 
