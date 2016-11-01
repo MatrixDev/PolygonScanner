@@ -76,7 +76,14 @@
 		//////////////////////////////////////////////////////////////////////
 		userInfo: function(user, dateSrc, dateDst, callback) {
 			dateSrc = new Date(dateSrc);
+			dateSrc.setHours(0);
+			dateSrc.setMinutes(0);
+			dateSrc.setSeconds(0);
+
 			dateDst = new Date(dateDst);
+			dateDst.setHours(23);
+			dateDst.setMinutes(59);
+			dateDst.setSeconds(59);
 
 			data = {
 				zone: user.zone,
