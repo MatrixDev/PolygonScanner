@@ -1,13 +1,14 @@
 $(document).ready(function() {
 
 	var controls = {
-		apply:		$('#apply').button(),
-		selector:	$('#user_id').userSelector().data('userSelector'),
-		location:	$('#location'),
-		login:		$('#login'),
-		password:	$('#password'),
+		apply:			$('#apply').button(),
+		selector:		$('#user_id').userSelector().data('userSelector'),
+		location:		$('#location'),
+		login:			$('#login'),
+		password:		$('#password'),
+		timeMultiplier:	$('#time_multiplier'),
 
-		timewrap:	$('#time_wrap').timewrap().data('timewrap')
+		timewrap:		$('#time_wrap').timewrap().data('timewrap')
 	};
 
 	//////////////////////////////////////////////////////////////////////
@@ -27,6 +28,11 @@ $(document).ready(function() {
 	});
 
 	//////////////////////////////////////////////////////////////////////
+	gl.db.getTimeMultiplier(function(value) {
+		controls.timeMultiplier.val(value);
+	});
+
+	//////////////////////////////////////////////////////////////////////
 	gl.version.get(function(version) {
 		$('#version').text(version);
 	});
@@ -38,6 +44,7 @@ $(document).ready(function() {
 		gl.db.setUser(user);
 		gl.db.setLocation(controls.location.val());
 		gl.db.setCredentials(controls.login.val(), controls.password.val());
+		gl.db.setTimeMultiplier(controls.timeMultiplier.val());
 
 		if (user != null) {
 			chrome.tabs.getCurrent(function (tab) {

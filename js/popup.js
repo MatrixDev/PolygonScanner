@@ -9,8 +9,7 @@
 		'headers with date can be clicked to exclude day from total work time needed',
 		'light-green background indicates a weekend, light-red background indicates excluded days',
 		'time distributions between different tasks can be set in the settings',
-        'now with Mykolaiv location',
-		'<font color="#f00">NEW!</font> moved to new API (bugs are possible)'
+		'<font color="#f00">NEW!</font> time multiplier increases time before filling Oracle sheet (use it if you\'re allocated > 100%)'
 	];
 
 	var popup = $('\
@@ -166,71 +165,81 @@
 		);
 
 		gl.api.userInfo(selector.user(), src, dst, function(infos) {
-			gl.db.getTimeWraps(function(wraps) {
+			gl.db.getTimeMultiplier(function(timeMultiplier) {
+				gl.db.getTimeWraps(function(wraps) {
 
-				var baseId = '#B22_';
+					var baseId = '#B22_';
 
-				// clear
-				for (var dayIndex = 0; dayIndex < 30; ++dayIndex) {
-					for (var taskIndex = 0; taskIndex < 30; ++taskIndex) {
-						$(baseId + taskIndex + '_' + dayIndex).val('');
-					}
-				}
-
-				for (var infoIndex = 0; infoIndex < infos.length; ++infoIndex) {
-					var info = infos[infoIndex];
-					if (!info.date) {
-						continue;
+					timeMultiplier = parseFloat(timeMultiplier)
+					if (isNaN(timeMultiplier)) {
+						timeMultiplier = 1
 					}
 
-					var date = new Date(info.date);
-					var dayIndex = date.getDay();
-					var offset = Math.round((date.getTime() - src.getTime()) / (24 * 60 * 60 * 1000));
-
-					// Calculating total weight
-
-					var weightTotal = 0;
-					for (var taskIndex = 0; taskIndex < wraps.length; ++taskIndex) {
-						var weight = parseInt(wraps[taskIndex][dayIndex], 10);
-						if (!isNaN(weight)) {
-							weightTotal += weight;
+					// clear
+					for (var dayIndex = 0; dayIndex < 30; ++dayIndex) {
+						for (var taskIndex = 0; taskIndex < 30; ++taskIndex) {
+							$(baseId + taskIndex + '_' + dayIndex).val('');
 						}
 					}
 
-					// Calculating time per task
-
-					var timeLeft = info.oracle;
-					var timePerTask = new Array(wraps.length);
-
-					for (var taskIndex = 0; taskIndex < wraps.length; ++taskIndex) {
-						var weight = parseInt(wraps[taskIndex][dayIndex], 10);
-						if (isNaN(weight)) {
+					for (var infoIndex = 0; infoIndex < infos.length; ++infoIndex) {
+						var info = infos[infoIndex];
+						if (!info.date) {
 							continue;
 						}
 
-						var time = Math.floor(info.oracle * weight / weightTotal * 100) / 100;
-						timeLeft -= time;
-						timePerTask[taskIndex] = time;
-					}
+						var date = new Date(info.date);
+						var dayIndex = date.getDay();
+						var offset = Math.round((date.getTime() - src.getTime()) / (24 * 60 * 60 * 1000));
 
-					// Adding left time for more precision
+						// Calculating total weight
 
-					for (var taskIndex = timePerTask.length - 1; taskIndex >= 0; --taskIndex) {
-						if (!isNaN(timePerTask[taskIndex])) {
-							timePerTask[taskIndex] += timeLeft;
-							break;
+						var weightTotal = 0;
+						for (var taskIndex = 0; taskIndex < wraps.length; ++taskIndex) {
+							var weight = parseInt(wraps[taskIndex][dayIndex], 10);
+							if (!isNaN(weight)) {
+								weightTotal += weight;
+							}
+						}
+
+						// Calculating time per task
+
+						var timeLeft = info.oracle;
+						var timePerTask = new Array(wraps.length);
+
+						for (var taskIndex = 0; taskIndex < wraps.length; ++taskIndex) {
+							var weight = parseInt(wraps[taskIndex][dayIndex], 10);
+							if (isNaN(weight)) {
+								continue;
+							}
+
+							var time = Math.floor(info.oracle * weight / weightTotal * 100) / 100;
+							timeLeft -= time;
+							timePerTask[taskIndex] = time;
+						}
+
+						// Adding left time for more precision
+
+						for (var taskIndex = timePerTask.length - 1; taskIndex >= 0; --taskIndex) {
+							if (!isNaN(timePerTask[taskIndex])) {
+								timePerTask[taskIndex] += timeLeft;
+								break;
+							}
+						}
+
+						// Filling the form
+
+						for (var taskIndex = 0; taskIndex < timePerTask.length; ++taskIndex) {
+							var time = timePerTask[taskIndex];
+							if (isNaN(time)) {
+								continue;
+							}
+							time *= timeMultiplier
+							$(baseId + (taskIndex + 1) + '_' + offset).val(time.toFixed(2));
 						}
 					}
 
-					// Filling the form
-
-					for (var taskIndex = 0; taskIndex < timePerTask.length; ++taskIndex) {
-						if (!isNaN(timePerTask[taskIndex])) {
-							$(baseId + (taskIndex + 1) + '_' + offset).val(timePerTask[taskIndex].toFixed(2));
-						}
-					}
-				}
-
+				});
 			});
 		}, function(error) {
 			alert('failed to fetch data from polygon: ' + error);

@@ -38,6 +38,16 @@
 		},
 
 		//////////////////////////////////////////////////////////////////////
+		getTimeMultiplier: function(callback) {
+			gl.invoke('db', 'getTimeMultiplier', [], callback);
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setTimeMultiplier: function(location) {
+			gl.invoke('db', 'setTimeMultiplier', [location]);
+		},
+
+		//////////////////////////////////////////////////////////////////////
 		getTimeWraps: function(callback) {
 			gl.invoke('db', 'getTimeWraps', [], callback);
 		},
@@ -107,6 +117,25 @@
 		setLocation: function(location) {
 			if (isNonEmptyString(location)) {
 				localStorage.location = location;
+			}
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		getTimeMultiplier: function(callback) {
+			var timeMultiplier = parseFloat(localStorage.timeMultiplier);
+
+			if (isNaN(timeMultiplier)) {
+				callback(1.0)
+			} else {
+				callback(timeMultiplier);
+			}
+		},
+
+		//////////////////////////////////////////////////////////////////////
+		setTimeMultiplier: function(timeMultiplier) {
+			var value = parseFloat(timeMultiplier);
+			if (!isNaN(value)) {
+				localStorage.timeMultiplier = value;
 			}
 		},
 
